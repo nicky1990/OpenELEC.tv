@@ -148,6 +148,11 @@ make_target() {
     done
   fi
 
+  if [ "$MULTI_DTBS" = "yes" ]; then
+    mkdir -p out
+    $ROOT/projects/$PROJECT/dtbTool -o out/dt.img -p scripts/dtc/ arch/arm/boot/dts/amlogic/
+  fi
+
   LDFLAGS="" make $KERNEL_IMAGE $KERNEL_MAKE_EXTRACMD
 
   if [ "$BUILD_ANDROID_BOOTIMG" = "yes" ]; then
