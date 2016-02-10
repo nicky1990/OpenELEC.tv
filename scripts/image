@@ -44,9 +44,9 @@ fi
 
 if [ -n "$DEVICE" ]; then
   if [ "$DEVEL_VERSION" = "devel" ] ; then
-    TARGET_VERSION="$PROJECT.$DEVICE.$TARGET_ARCH-$OS_VERSION-$OPENELEC_VERSION"
+    TARGET_VERSION="$PROJECT.$TARGET_ARCH-$DEVICE-$OS_VERSION-$OPENELEC_VERSION"
   else
-    TARGET_VERSION="$PROJECT.$DEVICE.$TARGET_ARCH-$OPENELEC_VERSION"
+    TARGET_VERSION="$PROJECT.$TARGET_ARCH-$DEVICE-$OPENELEC_VERSION"
   fi
 else
   if [ "$DEVEL_VERSION" = "devel" ] ; then
@@ -99,11 +99,14 @@ fi
 
   echo "$TARGET_VERSION" > $INSTALL/etc/release
 
+  echo "$DEVICE" > $INSTALL/etc/device
+
 # create /etc/os-release
   echo -e "NAME=\"$DISTRONAME\"" > $INSTALL/etc/os-release
   echo -e "VERSION=\"$OPENELEC_VERSION\"" >> $INSTALL/etc/os-release
   echo -e "ID=\"openelec\"" >> $INSTALL/etc/os-release
   echo -e "VERSION_ID=\"$OS_VERSION\"" >> $INSTALL/etc/os-release
+  echo -e "DEVICE=\"$DEVICE\"" >> $INSTALL/etc/os-release
   echo -e "PRETTY_NAME=\"$DISTRONAME ($([ "$OFFICIAL" = "yes" ] && echo "official" ||  echo "community")) - Version: $OPENELEC_VERSION\"" >> $INSTALL/etc/os-release
   echo -e "HOME_URL=\"http://www.openelec.tv\"" >> $INSTALL/etc/os-release
   echo -e "BUG_REPORT_URL=\"https://github.com/OpenELEC/OpenELEC.tv\"" >> $INSTALL/etc/os-release
