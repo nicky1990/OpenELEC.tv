@@ -17,12 +17,12 @@
 ################################################################################
 
 PKG_NAME="libamcodec"
-PKG_VERSION="45a1086"
+PKG_VERSION="210755d"
 PKG_REV="1"
 PKG_ARCH="arm arm64"
 PKG_LICENSE="other"
 PKG_SITE="http://openlinux.amlogic.com"
-PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_URL="http://amlinux.ru/source/$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="multimedia"
