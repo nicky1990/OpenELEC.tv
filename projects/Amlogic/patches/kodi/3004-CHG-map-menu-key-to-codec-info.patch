@@ -1,0 +1,32 @@
+From 1ae2ca0d58110aa54f6e53c0ea95b7e62af87048 Mon Sep 17 00:00:00 2001
+From: "Chris \"Koying\" Browet" <cbro@semperpax.com>
+Date: Sat, 18 Oct 2014 12:45:24 +0200
+Subject: [PATCH 3004/3041] CHG: map menu key to codec info
+
+---
+ system/keymaps/keyboard.xml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/system/keymaps/keyboard.xml b/system/keymaps/keyboard.xml
+index 9833cff..222ffee 100644
+--- a/system/keymaps/keyboard.xml
++++ b/system/keymaps/keyboard.xml
+@@ -322,13 +322,14 @@
+       <down>ChapterOrBigStepBack</down>
+       <a>AudioDelay</a>
+       <escape>Fullscreen</escape>
+-      <c>Playlist</c>
+       <v>ActivateWindow(Teletext)</v>
+       <text>ActivateWindow(Teletext)</text>
+       <up mod="ctrl">SubtitleShiftUp</up>
+       <down mod="ctrl">SubtitleShiftDown</down>
+       <pageup>SkipNext</pageup>
+       <pagedown>SkipPrevious</pagedown>
++      <menu>CodecInfo</menu>
++      <c>CodecInfo</c>
+     </keyboard>
+   </FullscreenVideo>
+   <VideoTimeSeek>
+-- 
+1.9.1
+
