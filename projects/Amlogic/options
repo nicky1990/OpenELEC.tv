@@ -162,7 +162,7 @@
   ALSA_SUPPORT="yes"
 
 # build and install PulseAudio support (yes / no)
-  PULSEAUDIO_SUPPORT="no"
+  PULSEAUDIO_SUPPORT="yes"
 
 # build and install espeak support (yes / no)
   ESPEAK_SUPPORT="yes"
@@ -252,6 +252,9 @@
 # OpenGL(X) implementation to use (no / Mesa)
   OPENGL="no"
 
+# OpenGL-ES implementation to use (no / bcm2835-driver / gpu-viv-bin-mx6q / opengl-meson)
+  OPENGLES="opengl-meson64"
+
 # Windowmanager to use (ratpoison / fluxbox / none)
   WINDOWMANAGER="none"
 
@@ -320,7 +323,7 @@
 # additional Firmware to use (dvb-firmware, misc-firmware, wlan-firmware)
 # Space separated list is supported,
 # e.g. FIRMWARE="dvb-firmware misc-firmware wlan-firmware"
-  FIRMWARE="misc-firmware wlan-firmware dvb-firmware"
+  FIRMWARE="misc-firmware wlan-firmware dvb-firmware brcmfmac_sdio-firmware-aml"
 
 # build with lm_sensors hardware monitoring support (yes / no)
   SENSOR_SUPPORT="yes"
@@ -359,7 +362,7 @@
   DISTRO_MIRROR="http://sources.openelec.tv/mirror"
   DISTRO_SRC="http://sources.openelec.tv/$OPENELEC_VERSION"
 
-  case $TARGET_ARCH in
+  case $TARGET_KERNEL_ARCH in
     arm)
       # set the addon dirs
       ADDON_PATH="$ADDON_VERSION/WeTek_Play/$TARGET_ARCH"
