@@ -213,6 +213,7 @@ fi
         enable_service $(basename $service)
       fi
     done
+  fi
 
 # copy board related files to filesystem
   if [ -n "$DEVICE" -a -d "$PROJECT_DIR/$PROJECT/devices/$DEVICE/filesystem" ]; then
