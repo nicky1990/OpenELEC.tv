@@ -34,7 +34,7 @@ PKG_AUTORECONF="no"
 
 makeinstall_target() {
   mkdir -p $INSTALL/usr/bin
-    cp remotecfg $INSTALL/usr/bin
+    #cp remotecfg $INSTALL/usr/bin
 
   mkdir -p $INSTALL/usr/lib/openelec
     cp $PKG_DIR/scripts/* $INSTALL/usr/lib/openelec
