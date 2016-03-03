@@ -31,8 +31,8 @@ PKG_SHORTDESC="linux26: The Linux kernel 2.6 precompiled kernel binary image and
 PKG_LONGDESC="This package contains a precompiled kernel image and the modules."
 case "$LINUX" in
   amlogic)
-    if [ "$TARGET_ARCH" = "arm64" ]; then
-      PKG_VERSION="amlogic-3.14-1982659"
+    if [ "$TARGET_KERNEL_ARCH" = "arm64" ]; then
+      PKG_VERSION="amlogic-3.14-c8f4450"
       PKG_URL="http://amlinux.ru/source/$PKG_NAME-$PKG_VERSION.tar.gz"
     else
       PKG_VERSION="amlogic-3.10-ca65e57"
