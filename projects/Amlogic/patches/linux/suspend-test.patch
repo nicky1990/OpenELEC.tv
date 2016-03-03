@@ -1,0 +1,33 @@
+diff --git a/kernel/power/Kconfig b/kernel/power/Kconfig
+index 4a454c0..83a4065 100644
+--- a/kernel/power/Kconfig
++++ b/kernel/power/Kconfig
+@@ -59,6 +59,14 @@ config EARLYSUSPEND
+ 		Call early suspend handlers when the user requested sleep state
+ 		changes.
+ 
++config FORCE_POWER_ON_STATE_AFTER_RESUME
++	bool "Force to request the Power ON state after a resume"
++	depends on WAKELOCK && EARLYSUSPEND
++	default n
++	help
++	  Force to request the Power ON state after a resume, causing to execute the late resume
++	  and prevent transition back into the suspended state.
++
+ choice
+ 	prompt "User-space screen access"
+ 	default FB_EARLYSUSPEND if !FRAMEBUFFER_CONSOLE
+diff --git a/kernel/power/wakelock_android.c b/kernel/power/wakelock_android.c
+index 20c3741..e393f0b 100644
+--- a/kernel/power/wakelock_android.c
++++ b/kernel/power/wakelock_android.c
+@@ -318,6 +318,9 @@ static void suspend(struct work_struct *work)
+ 
+ 	}
+ 	wake_lock_timeout(&unknown_wakeup, 5 * HZ);
++#ifdef CONFIG_FORCE_POWER_ON_STATE_AFTER_RESUME
++	request_suspend_state(PM_SUSPEND_ON);
++#endif
+ }
+ 
+ static DECLARE_WORK(suspend_work, suspend);
