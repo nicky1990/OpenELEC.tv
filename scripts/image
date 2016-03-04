@@ -401,7 +401,7 @@ fi
         if [ -f "$INSTALL_SRC_DIR/files/recovery.img" ]; then
           echo "Creating Amlogic ZIP auto-install package"
           pushd sign > /dev/null
-          echo --update_package=/sdcard/$IMAGE_NAME-update.zip > factory_update_param.aml
+          echo -e "--update_package=/sdcard/$IMAGE_NAME-update.zip\n--wipe_cache\n--wipe_data" > factory_update_param.aml
           cp $INSTALL_SRC_DIR/files/recovery.img .
           if [ -f $INSTALL_SRC_DIR/files/aml_autoscript ]; then
             cp $INSTALL_SRC_DIR/files/aml_autoscript .
