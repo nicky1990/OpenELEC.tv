@@ -2,23 +2,21 @@ diff --git a/xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp b/xbmc/windowing/egl/EG
 index 2103f0b..7612724 100644
 --- a/xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp
 +++ b/xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp
-@@ -51,6 +51,7 @@ CEGLNativeTypeAmlogic::~CEGLNativeTypeAmlogic()
+@@ -56,7 +56,13 @@ bool CEGLNativeTypeAmlogic::CheckCompatibility()
  
- bool CEGLNativeTypeAmlogic::CheckCompatibility()
- {
-+/*
-   std::string name;
-   std::string modalias = "/sys/class/graphics/" + m_framebuffer_name + "/device/modalias";
- 
-@@ -59,6 +60,8 @@ bool CEGLNativeTypeAmlogic::CheckCompatibility()
-   if (name == "platform:mesonfb")
+   SysfsUtils::GetString(modalias, name);
+   StringUtils::Trim(name);
+-  if (name == "platform:mesonfb")
++  std::vector<std::string> mesonfb;
++
++  // Checking for old kernels and new 3.14 (meson-fb)
++  mesonfb.push_back("platform:mesonfb");
++  mesonfb.push_back("meson-fb");
++
++  if (StringUtils::ContainsKeyword(name, mesonfb))
      return true;
    return false;
-+*/
-+  return true;
  }
- 
- void CEGLNativeTypeAmlogic::Initialize()
 -- 
 1.7.10.4
 
