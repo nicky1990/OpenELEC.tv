@@ -1,0 +1,18 @@
+set_bootloader_env("upgrade_step", "3");
+show_progress(0.750000, 0);
+ui_print("Writing kernel image");
+write_raw_image(package_extract_file("KERNEL"), "boot");
+ui_print("Writing logo image");
+write_raw_image(package_extract_file("logo.img"), "logo");
+ui_print("Writing recovery image");
+write_raw_image(package_extract_file("recovery.img"), "recovery");
+ui_print("Extract system");
+format("ext4", "EMMC", "/dev/block/system", "0", "/system");
+mount("ext4", "EMMC", "/dev/block/system", "/system");
+package_extract_dir("system", "/system");
+unmount("/system");
+show_progress(0.200000, 10);
+ui_print("Writing booloader");
+write_raw_image(package_extract_file("bootloader.img"), "bootloader");
+set_bootloader_env("upgrade_step", "1");
+set_bootloader_env("force_auto_update", "false");

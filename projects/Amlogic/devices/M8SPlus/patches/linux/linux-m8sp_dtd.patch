@@ -1,0 +1,83 @@
+diff --git a/arch/arm/boot/dts/amlogic/meson8m2_n200_2G.dtd b/arch/arm/boot/dts/amlogic/meson8m2_n200_2G.dtd
+index 6063cb4..0a667a2 100644
+--- a/arch/arm/boot/dts/amlogic/meson8m2_n200_2G.dtd
++++ b/arch/arm/boot/dts/amlogic/meson8m2_n200_2G.dtd
+@@ -4,7 +4,7 @@
+ //$$ REMOVE 1
+ void root_func(){
+ //$$ ADD /{
+-	amlogic-dt-id = "m8m2_n200_2G";
++	amlogic-dt-id = "meson8m2_KII";
+ 	compatible = "AMLOGIC,8726_M8M2";
+ 	model = "AMLOGIC";
+ 	interrupt-parent = <&gic>;
+@@ -88,7 +88,7 @@ void root_func(){
+ 
+         cma_0:region@0 {
+            region_name = "cma_0";
+-           reg = <0 0x01200000>;
++           reg = <0 0x02400000>;
+            linux,contiguous-region;
+         };
+ 	};
+@@ -133,11 +133,11 @@ void root_func(){
+ 		compatible = "amlogic,mesonfb";
+ 		dev_name = "mesonfb";
+ 		status = "okay";
+-	   	reserve-memory = <0x01800000  0x00100000>;
++	   	reserve-memory = <0x04800000  0x00100000>;
+ 	   	reserve-iomap = "true";
+                 vmode = <3>; /**0:VMODE_720P 1:VMODE_LCD  2:VMODE_LVDS_1080P 3:VMODE_1080P*/
+ 		scale_mode = <1>; /*0:default 1:new*/
+-		4k2k_fb = <0>;
++		4k2k_fb = <1>;
+  		display_size_default = <1920 1080 1920 3240 32>; //1920*1080*4*3 = 0x17BB000
+ 	};
+ 
+@@ -176,7 +176,6 @@ void root_func(){
+                 dev_name = "vdec.0";
+                 status = "okay";
+                 reserve-memory = <0x10000000>;
+-                reserve-iomap = "true";
+         };
+ ///	-	picture decoder
+ //$$ MODULE="picture decoder"
+@@ -312,13 +311,13 @@ void root_func(){
+ //$$ DEVICE="amvideocap"
+ //$$ L2 PROP_STR = "status"
+ //$$ L3 PROP_U32 4 ="reg"
+-	amvideocap{
+-		compatible = "amlogic,amvideocap";
+-		dev_name = "amvideocap.0";
+-		status = "okay";
+-		reserve-memory = <0x00800000>;//1920*1088*4
+-		reserve-iomap = "true";
+-	};
++//	amvideocap{
++//		compatible = "amlogic,amvideocap";
++//		dev_name = "amvideocap.0";
++//		status = "okay";
++//		reserve-memory = <0x00800000>;//1920*1088*4
++//		reserve-iomap = "true";
++//	};
+ 
+ /// ***************************************************************************************
+ ///	-	RTC
+@@ -490,7 +489,7 @@ sdio{
+             gpio_dat3 = "CARD_4";
+             jtag_pin = "CARD_0";
+             gpio_cd = "CARD_6";
+-            gpio_ro = "GPIOZ_0";
++            //gpio_ro = "GPIOZ_0";
+             irq_in = <3>;
+             irq_out = <5>;
+             card_type = <5>; /* 0:unknown, 1:mmc card(include eMMC), 2:sd card(include tSD), 3:sdio device(ie:sdio-wifi), 4:SD combo (IO+mem) card, 5:NON sdio device(means sd/mmc card), other:reserved */
+@@ -1906,7 +1905,7 @@ sdio{
+ /// ***************************************************************************************
+ ///	-	Ethernet
+         ethmac: ethernet@0xc9410000{
+-                compatible = "amlogic,meson8m2-rmii-dwmac", "snps,dwmac";
++                compatible = "amlogic,meson8m2-rgmii-dwmac", "snps,dwmac";
+                 reg = <0xc9410000 0x10000
+                        0xc1108108 0x4>;
+                 interrupts = <0 8 1>;
