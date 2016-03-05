@@ -1,0 +1,26 @@
+diff --git a/drivers/amlogic/hdmi/hdmi_tx/hdmi_tx_cec.c b/drivers/amlogic/hdmi/hdmi_tx/hdmi_tx_cec.c
+index 0634316..22140a6 100755
+--- a/drivers/amlogic/hdmi/hdmi_tx/hdmi_tx_cec.c
++++ b/drivers/amlogic/hdmi/hdmi_tx/hdmi_tx_cec.c
+@@ -419,7 +419,7 @@ static void cec_task(struct work_struct *work)
+     hdmitx_dev_t* hdmitx_device = (hdmitx_dev_t*)container_of(work, hdmitx_dev_t, cec_work);
+ 
+     // Get logical address
+-    hdmi_print(INF, CEC "CEC task process\n");
++    //hdmi_print(INF, CEC "CEC task process\n");
+     if ((hdmitx_device->cec_func_config & (1 << CEC_FUNC_MSAK)) &&
+         !cec_global_info.cec_flag.cec_init_flag) {
+         msleep_interruptible(15000);
+diff --git a/drivers/amlogic/hdmi/hdmi_tx/hdmi_tx_cec.c b/drivers/amlogic/hdmi/hdmi_tx/hdmi_tx_cec.c
+index 0634316..8a44df1 100755
+--- a/drivers/amlogic/hdmi/hdmi_tx/hdmi_tx_cec.c
++++ b/drivers/amlogic/hdmi/hdmi_tx/hdmi_tx_cec.c
+@@ -69,7 +69,7 @@ static unsigned char gbl_msg[MAX_MSG];
+ cec_global_info_t cec_global_info;
+ unsigned char rc_long_press_pwr_key = 0;
+ EXPORT_SYMBOL(rc_long_press_pwr_key);
+-bool cec_msg_dbg_en = 1;
++bool cec_msg_dbg_en = 0;
+ 
+ ssize_t cec_lang_config_state(struct switch_dev *sdev, char *buf)
+ {
