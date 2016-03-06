@@ -1,3 +1,4 @@
+#!/bin/sh
 ################################################################################
 #      This file is part of OpenELEC - http://www.openelec.tv
 #      Copyright (C) 2009-2016 Stephan Raue (stephan@openelec.tv)
@@ -16,31 +17,33 @@
 #  along with OpenELEC.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
-PKG_NAME="wetekdvb"
-PKG_VERSION="20160223"
-PKG_REV="1"
-PKG_ARCH="arm"
-PKG_LICENSE="nonfree"
-PKG_SITE="http://www.wetek.com/"
-PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS_TARGET="toolchain linux"
-PKG_NEED_UNPACK="$LINUX_DEPENDS"
-PKG_PRIORITY="optional"
-PKG_SECTION="driver"
-PKG_SHORTDESC="wetekdvb: Wetek DVB driver"
-PKG_LONGDESC="These package contains Wetek's DVB driver "
+if [ -z "$1" ]; then
+  echo "Usage: $0 <branch-name>"
+  exit 0
+fi
 
-PKG_IS_ADDON="no"
-PKG_AUTORECONF="no"
+echo "getting sources..."
+  if [ ! -d kodi-language-addons.git ]; then
+    git clone --depth=1 -b $1 https://github.com/xbmc/repo-resources.git kodi-language-addons.git
+  fi
 
-make_target() {
-  : # nothing todo
-}
+  cd kodi-language-addons.git
+    git pull
+    GIT_REV=`git log -n1 --format=%h`
+  cd ..
 
-makeinstall_target() {
-  mkdir -p $INSTALL/lib/modules/$(get_module_dir)/$PKG_NAME
-    cp driver/*.ko $INSTALL/lib/modules/$(get_module_dir)/$PKG_NAME
+echo "copying sources..."
+  rm -rf kodi-language-addons-$GIT_REV
+  cp -R kodi-language-addons.git kodi-language-addons-$GIT_REV
 
-  mkdir -p $INSTALL/lib/firmware
-    cp firmware/* $INSTALL/lib/firmware
-}
+echo "cleaning sources..."
+  cd kodi-language-addons-$GIT_REV
+    rm -rf .git
+    ls | grep -v resource.language | xargs rm -r
+  cd ..
+
+echo "packing sources..."
+  tar cvJf kodi-language-addons-$GIT_REV.tar.xz kodi-language-addons-$GIT_REV
+
+echo "remove temporary sourcedir..."
+  rm -rf kodi-language-addons-$GIT_REV

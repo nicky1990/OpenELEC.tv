@@ -16,31 +16,27 @@
 #  along with OpenELEC.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
-PKG_NAME="wetekdvb"
-PKG_VERSION="20160223"
+PKG_NAME="kodi-language-addons"
+PKG_VERSION="8124840"
 PKG_REV="1"
-PKG_ARCH="arm"
-PKG_LICENSE="nonfree"
-PKG_SITE="http://www.wetek.com/"
+PKG_ARCH="any"
+PKG_LICENSE="GPL"
+PKG_SITE="https://github.com/xbmc/repo-resources"
 PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS_TARGET="toolchain linux"
-PKG_NEED_UNPACK="$LINUX_DEPENDS"
+PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
-PKG_SECTION="driver"
-PKG_SHORTDESC="wetekdvb: Wetek DVB driver"
-PKG_LONGDESC="These package contains Wetek's DVB driver "
+PKG_SECTION="mediacenter"
+PKG_SHORTDESC="kodi language add-ons"
+PKG_LONGDESC="kodi language add-ons"
 
-PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
+PKG_IS_ADDON="no"
 
 make_target() {
-  : # nothing todo
+  :
 }
 
 makeinstall_target() {
-  mkdir -p $INSTALL/lib/modules/$(get_module_dir)/$PKG_NAME
-    cp driver/*.ko $INSTALL/lib/modules/$(get_module_dir)/$PKG_NAME
-
-  mkdir -p $INSTALL/lib/firmware
-    cp firmware/* $INSTALL/lib/firmware
+  mkdir -p $INSTALL/usr/share/kodi/addons/
+    cp -PR $ROOT/$PKG_BUILD/* $INSTALL/usr/share/kodi/addons/
 }
