@@ -32,7 +32,7 @@ PKG_LONGDESC="This package contains a precompiled kernel image and the modules."
 case "$LINUX" in
   amlogic)
     if [ "$TARGET_KERNEL_ARCH" = "arm64" ]; then
-      PKG_VERSION="amlogic-3.14-c8f4450"
+      PKG_VERSION="amlogic-3.14-9202612"
       PKG_URL="http://amlinux.ru/source/$PKG_NAME-$PKG_VERSION.tar.gz"
     else
       PKG_VERSION="amlogic-3.10-ca65e57"
