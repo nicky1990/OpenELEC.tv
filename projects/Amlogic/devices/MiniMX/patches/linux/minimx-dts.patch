@@ -1,5 +1,5 @@
 diff --git a/arch/arm64/boot/dts/amlogic/gxbb_p200.dts b/arch/arm64/boot/dts/amlogic/gxbb_p200.dts
-index 803045e..b3ecb49 100644
+index 803045e..275a538 100644
 --- a/arch/arm64/boot/dts/amlogic/gxbb_p200.dts
 +++ b/arch/arm64/boot/dts/amlogic/gxbb_p200.dts
 @@ -55,7 +55,7 @@
@@ -7,20 +7,23 @@ index 803045e..b3ecb49 100644
  		fb_reserved:linux,meson-fb {
  			compatible = "amlogic, fb-memory";
 -			size = <0x0 0x2000000>;
-+			size = <0x0 0x4800000>;
++			size = <0x0 0x8000000>;
  			no-map;
  		};
  
-@@ -138,7 +138,7 @@
+@@ -138,9 +138,10 @@
  		interrupts = <0 3 1
  			0 89 1>;
  		interrupt-names = "viu-vsync", "rdma";
 -		mem_size = <0x01800000 0x00800000>; /* fb0/fb1 memory size */
-+		mem_size = <0x04380000 0x00100000>; /* fb0/fb1 memory size */
++		mem_size = <0x06000000 0x00100000>; /* fb0/fb1 memory size */
  		vmode = <3>; /** 0:VMODE_720P 1:VMODE_LCD 2:VMODE_LVDS_1080P 3:VMODE_1080P */
  		scale_mode = <1>; /** 0:VPU free scale 1:OSD free scale 2:OSD super scale */
++		4k2k_fb = <1>;
  		display_size_default = <1920 1080 1920 3240 32>; //1920*1080*4*3 = 0x17BB000
-@@ -810,11 +810,11 @@
+ 	};
+ 	ge2d {
+@@ -810,11 +811,11 @@
  		pl-periph-id = <0>; /** lm name */
  		clock-src = "usb0"; /** clock src */
  		port-id = <0>;  /** ref to mach/usb.h */
@@ -34,7 +37,7 @@ index 803045e..b3ecb49 100644
  		gpio-vbus-power = "GPIODV_24";
  		gpios = <&gpio       GPIODV_24       GPIO_ACTIVE_HIGH>;
  		gpio-work-mask	= <1>; /**0: work on pulldown,1:work on pullup*/
-@@ -988,8 +988,8 @@
+@@ -988,8 +989,8 @@
  		compatible = "amlogic, sysled";
  		dev_name = "sysled";
  		status = "okay";
@@ -45,7 +48,7 @@ index 803045e..b3ecb49 100644
  	};
  
  /*
-@@ -1041,20 +1041,19 @@
+@@ -1041,20 +1042,19 @@
  	};
  
  	audio_spdif_pins:audio_pin1{
