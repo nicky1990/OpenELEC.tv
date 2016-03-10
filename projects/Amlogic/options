@@ -362,7 +362,7 @@
   DISTRO_MIRROR="http://sources.openelec.tv/mirror"
   DISTRO_SRC="http://sources.openelec.tv/$OPENELEC_VERSION"
 
-  case $TARGET_KERNEL_ARCH in
+  case $TARGET_ARCH in
     arm)
       # set the addon dirs
       ADDON_PATH="$ADDON_VERSION/WeTek_Play/$TARGET_ARCH"
