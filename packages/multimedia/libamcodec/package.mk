@@ -19,7 +19,7 @@
 PKG_NAME="libamcodec"
 PKG_VERSION="210755d"
 PKG_REV="1"
-PKG_ARCH="arm arm64"
+PKG_ARCH="arm aarch64"
 PKG_LICENSE="other"
 PKG_SITE="http://openlinux.amlogic.com"
 PKG_GIT_URL="https://github.com/surkovalex/libamcodec.git"

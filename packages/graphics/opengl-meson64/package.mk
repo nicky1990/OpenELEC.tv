@@ -19,7 +19,7 @@
 PKG_NAME="opengl-meson64"
 PKG_VERSION="r5p1-01rel0"
 PKG_REV="1"
-PKG_ARCH="arm64"
+PKG_ARCH="aarch64"
 PKG_LICENSE="nonfree"
 PKG_SITE="http://openlinux.amlogic.com:8000/download/ARM/filesystem/"
 PKG_URL="http://amlinux.ru/source/opengl-meson64-r5p1-01rel0.tar.gz"

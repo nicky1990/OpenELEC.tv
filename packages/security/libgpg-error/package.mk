@@ -37,7 +37,7 @@ PKG_CONFIGURE_OPTS_TARGET="CC_FOR_BUILD=$HOST_CC --enable-static --disable-share
 pre_configure_target() {
 # inspired by openembedded
   case ${TARGET_ARCH} in
-    arm64)
+    aarch64)
       GPGERROR_TUPLE=aarch64-unknown-linux-gnu
       GPGERROR_TARGET=linux-gnueabi
       ;;
