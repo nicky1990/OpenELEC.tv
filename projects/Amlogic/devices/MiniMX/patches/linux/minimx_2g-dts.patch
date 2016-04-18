@@ -1,7 +1,7 @@
-diff --git a/arch/arm64/boot/dts/amlogic/gxbb_p200.dts b/arch/arm64/boot/dts/amlogic/gxbb_p200.dts
-index 803045e..275a538 100644
---- a/arch/arm64/boot/dts/amlogic/gxbb_p200.dts
-+++ b/arch/arm64/boot/dts/amlogic/gxbb_p200.dts
+diff --git a/arch/arm64/boot/dts/amlogic/gxbb_p200_2G.dts b/arch/arm64/boot/dts/amlogic/gxbb_p200_2G.dts
+index 1c4c324..434a3a2 100644
+--- a/arch/arm64/boot/dts/amlogic/gxbb_p200_2G.dts
++++ b/arch/arm64/boot/dts/amlogic/gxbb_p200_2G.dts
 @@ -55,7 +55,7 @@
  		};
  		fb_reserved:linux,meson-fb {
@@ -23,7 +23,11 @@ index 803045e..275a538 100644
  		display_size_default = <1920 1080 1920 3240 32>; //1920*1080*4*3 = 0x17BB000
  	};
  	ge2d {
-@@ -810,11 +811,11 @@
+diff --git a/arch/arm64/boot/dts/amlogic/gxbb_p200_2G.dts b/arch/arm64/boot/dts/amlogic/gxbb_p200_2G.dts
+index 1c4c324..b0c45df 100644
+--- a/arch/arm64/boot/dts/amlogic/gxbb_p200_2G.dts
++++ b/arch/arm64/boot/dts/amlogic/gxbb_p200_2G.dts
+@@ -810,11 +810,11 @@
  		pl-periph-id = <0>; /** lm name */
  		clock-src = "usb0"; /** clock src */
  		port-id = <0>;  /** ref to mach/usb.h */
@@ -37,7 +41,7 @@ index 803045e..275a538 100644
  		gpio-vbus-power = "GPIODV_24";
  		gpios = <&gpio       GPIODV_24       GPIO_ACTIVE_HIGH>;
  		gpio-work-mask	= <1>; /**0: work on pulldown,1:work on pullup*/
-@@ -988,8 +989,8 @@
+@@ -988,8 +988,8 @@
  		compatible = "amlogic, sysled";
  		dev_name = "sysled";
  		status = "okay";
@@ -48,28 +52,16 @@ index 803045e..275a538 100644
  	};
  
  /*
-@@ -1041,20 +1042,19 @@
+@@ -1041,9 +1041,9 @@
  	};
  
  	audio_spdif_pins:audio_pin1{
 -		amlogic,setmask=<AO 0x10000>;	/*spdif_out*/
 -		amlogic,clrmask=<AO 0x40000>;	/*spdif_out*/
 -		amlogic,pins ="GPIOAO_6";		/*spdif_out*/
-+		amlogic,setmask=<1 0x200>;    /*spdif_out*/
-+		amlogic,clrmask=<1 0x10000>;  /*spdif_out*/
-+		amlogic,pins ="GPIOY_12";     /*spdif_out*/
++		amlogic,setmask=<1 0x200>;	/*spdif_out*/
++		amlogic,clrmask=<1 0x10000>;	/*spdif_out*/
++		amlogic,pins ="GPIOY_12";		/*spdif_out*/
  	};
  
  	audio_btpcm_pins:audio_btpcm_pins{
- 		/* BT PCM PINMUX SETTING*/
- 		amlogic,setmask=<3 0x78000000>;
--		amlogic,clrmask=<3 0x803280
-+		amlogic,clrmask=<3 0x00803280
- 				4 0xc0>;
- 		amlogic,pins ="GPIOX_8", "GPIOX_9", "GPIOX_10", "GPIOX_11";
- 	};
- };
--
- &efuse {
- 	status = "okay";
- };

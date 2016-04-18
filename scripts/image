@@ -393,7 +393,7 @@ fi
 
         # copy system and kernel images
         mkdir -p "$AML_PKG_DIR/system"
-        cp -f $BUILD/linux-$(kernel_version)/$ANDROID_BOOTIMG_SECOND $AML_PKG_DIR/dtb.img
+        cp -f $BUILD/linux-$(kernel_version)/arch/$TARGET_KERNEL_ARCH/boot/dtb.img $AML_PKG_DIR/dtb.img
         cp $TARGET_IMG/$IMAGE_NAME.system $AML_PKG_DIR/system/SYSTEM
         cp $TARGET_IMG/$IMAGE_NAME.kernel $AML_PKG_DIR/KERNEL
 
