@@ -1,0 +1,12 @@
+diff --git a/drivers/amlogic/hdmi/hdmi_tx_20/hdmi_tx_main.c b/drivers/amlogic/hdmi/hdmi_tx_20/hdmi_tx_main.c
+index 8cf3178..38d612d 100644
+--- a/drivers/amlogic/hdmi/hdmi_tx_20/hdmi_tx_main.c
++++ b/drivers/amlogic/hdmi/hdmi_tx_20/hdmi_tx_main.c
+@@ -1756,6 +1756,7 @@ void hdmitx_hpd_plugout_handler(struct work_struct *work)
+ 
+ 	if (!(hdev->hdmitx_event & (HDMI_TX_HPD_PLUGOUT)))
+ 		return;
++	return;
+ 	hdev->hdcp_mode = 0;
+ 	hdev->HWOp.CntlDDC(hdev, DDC_HDCP_MUX_INIT, 1);
+ 	hdev->HWOp.CntlDDC(hdev, DDC_HDCP_OP, HDCP14_OFF);
