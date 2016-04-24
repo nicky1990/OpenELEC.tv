@@ -54,6 +54,24 @@ index 7236444..aa8b688 100644
      close(fd);
      return 0;
    }
+@@ -714,7 +715,7 @@ int write_av_packet(am_private_t *para, am_packet_t *pkt)
+         }
+         pkt->newflag = 0;
+     }
+-	
++
+     buf = pkt->data;
+     size = pkt->data_size ;
+     if (size == 0 && pkt->isvalid) {
+@@ -1562,7 +1563,7 @@ bool CAMLCodec::OpenDecoder(CDVDStreamInfo &hints)
+       // h264 in an avi file
+       if (m_hints.ptsinvalid)
+         am_private->gcodec.param = (void*)(EXTERNAL_PTS | SYNC_OUTSIDE);
+-      break; 
++      break;
+     case VFORMAT_REAL:
+       am_private->stream_type = AM_STREAM_RM;
+       am_private->vcodec.noblock = 1;
 @@ -1630,7 +1631,7 @@ bool CAMLCodec::OpenDecoder(CDVDStreamInfo &hints)
    g_renderManager.RegisterRenderUpdateCallBack((const void*)this, RenderUpdateCallBack);
    g_renderManager.RegisterRenderFeaturesCallBack((const void*)this, RenderFeaturesCallBack);
@@ -63,6 +81,14 @@ index 7236444..aa8b688 100644
  
    std::string strScaler;
    SysfsUtils::GetString("/sys/class/ppmgr/ppscaler", strScaler);
+@@ -2186,7 +2187,6 @@ void CAMLCodec::SetVideoRect(const CRect &SrcRect, const CRect &DestRect)
+         int diff = (int) ((dst_rect.Height() - dst_rect.Width()) / 2);
+         dst_rect = CRect(DestRect.x1 - diff, DestRect.y1, DestRect.x2 + diff, DestRect.y2);
+       }
+-
+   }
+ 
+   if (m_dst_rect != dst_rect)
 @@ -2208,7 +2208,7 @@ void CAMLCodec::SetVideoRect(const CRect &SrcRect, const CRect &DestRect)
  #ifdef TARGET_ANDROID
    display = m_display_rect;
@@ -82,9 +108,18 @@ index 7236444..aa8b688 100644
    CLog::Log(LOGDEBUG, "CAMLCodec::SetVideoRect:gui(%s)", s_gui.c_str());
    CLog::Log(LOGDEBUG, "CAMLCodec::SetVideoRect:m_dst_rect(%s)", s_m_dst_rect.c_str());
 diff --git a/xbmc/utils/AMLUtils.cpp b/xbmc/utils/AMLUtils.cpp
-index 1b54435..c4d42b2 100644
+index 1b54435..44e6caa 100644
 --- a/xbmc/utils/AMLUtils.cpp
 +++ b/xbmc/utils/AMLUtils.cpp
+@@ -79,7 +79,7 @@ bool aml_wired_present()
+ }
+ 
+ bool aml_permissions()
+-{  
++{
+   if (!aml_present())
+     return false;
+ 
 @@ -195,7 +195,8 @@ bool aml_support_h264_4k2k()
  
  void aml_set_audio_passthrough(bool passthrough)
@@ -195,7 +230,7 @@ index 1b54435..c4d42b2 100644
      res->dwFlags = D3DPRESENTFLAG_PROGRESSIVE;
    }
 -  else if (StringUtils::EqualsNoCase(fromMode, "2160p50hz420"))
-+  else if (StringUtils::EqualsNoCase(fromMode, "2160p50hz"))
++  else if (StringUtils::EqualsNoCase(fromMode, "2160p50hz") || StringUtils::EqualsNoCase(fromMode, "2160p50hz420"))
    {
      res->iWidth = 1920;
      res->iHeight= 1080;
@@ -213,7 +248,7 @@ index 1b54435..c4d42b2 100644
 +    res->fRefreshRate = 59.940;
 +    res->dwFlags = D3DPRESENTFLAG_PROGRESSIVE;
 +  }
-+  else if (StringUtils::EqualsNoCase(fromMode, "2160p60hz"))
++  else if (StringUtils::EqualsNoCase(fromMode, "2160p60hz") || StringUtils::EqualsNoCase(fromMode, "2160p60hz420"))
    {
      res->iWidth = 1920;
      res->iHeight= 1080;
@@ -223,7 +258,7 @@ index 1b54435..c4d42b2 100644
  }
 -
 diff --git a/xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp b/xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp
-index d8dc511..15a6429 100644
+index d8dc511..cf04081 100644
 --- a/xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp
 +++ b/xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp
 @@ -23,13 +23,18 @@
@@ -330,7 +365,7 @@ index d8dc511..15a6429 100644
  #if defined(_FBDEV_WINDOW_H_)
    if (m_nativeWindow)
    {
-@@ -144,52 +168,99 @@ bool CEGLNativeTypeAmlogic::SetNativeResolution(const RESOLUTION_INFO &res)
+@@ -144,52 +168,102 @@ bool CEGLNativeTypeAmlogic::SetNativeResolution(const RESOLUTION_INFO &res)
    }
  #endif
  
@@ -447,11 +482,14 @@ index d8dc511..15a6429 100644
 +          case 30:
 +            result = SetDisplayResolution("2160p30hz");
 +            break;
++          case 50:
++            result = SetDisplayResolution("2160p50hz420");
++            break;
 +          case 59:
 +            result = SetDisplayResolution("2160p59hz");
 +            break;
 +          case 60:
-+            result = SetDisplayResolution("2160p60hz");
++            result = SetDisplayResolution("2160p60hz420");
 +            break;
 +        }
 +        break;
@@ -470,7 +508,7 @@ index d8dc511..15a6429 100644
    std::string valstr;
    SysfsUtils::GetString("/sys/class/amhdmitx/amhdmitx0/disp_cap", valstr);
    std::vector<std::string> probe_str = StringUtils::Split(valstr, "\n");
-@@ -202,11 +273,12 @@ bool CEGLNativeTypeAmlogic::ProbeResolutions(std::vector<RESOLUTION_INFO> &resol
+@@ -202,11 +276,12 @@ bool CEGLNativeTypeAmlogic::ProbeResolutions(std::vector<RESOLUTION_INFO> &resol
        resolutions.push_back(res);
    }
    return resolutions.size() > 0;
@@ -484,7 +522,7 @@ index d8dc511..15a6429 100644
    // check display/mode, it gets defaulted at boot
    if (!GetNativeResolution(res))
    {
-@@ -219,6 +291,8 @@ bool CEGLNativeTypeAmlogic::GetPreferredResolution(RESOLUTION_INFO *res) const
+@@ -219,6 +294,8 @@ bool CEGLNativeTypeAmlogic::GetPreferredResolution(RESOLUTION_INFO *res) const
  
  bool CEGLNativeTypeAmlogic::ShowWindow(bool show)
  {
@@ -493,7 +531,7 @@ index d8dc511..15a6429 100644
    std::string blank_framebuffer = "/sys/class/graphics/" + m_framebuffer_name + "/blank";
    SysfsUtils::SetInt(blank_framebuffer.c_str(), show ? 0 : 1);
    return true;
-@@ -226,6 +300,8 @@ bool CEGLNativeTypeAmlogic::ShowWindow(bool show)
+@@ -226,6 +303,8 @@ bool CEGLNativeTypeAmlogic::ShowWindow(bool show)
  
  bool CEGLNativeTypeAmlogic::SetDisplayResolution(const char *resolution)
  {
@@ -502,7 +540,7 @@ index d8dc511..15a6429 100644
    std::string mode = resolution;
    // switch display resolution
    SysfsUtils::SetString("/sys/class/display/mode", mode.c_str());
-@@ -237,32 +313,41 @@ bool CEGLNativeTypeAmlogic::SetDisplayResolution(const char *resolution)
+@@ -237,32 +316,44 @@ bool CEGLNativeTypeAmlogic::SetDisplayResolution(const char *resolution)
    return true;
  }
  
@@ -535,6 +573,9 @@ index d8dc511..15a6429 100644
 +  if (res.iScreenWidth > res.iWidth && res.iScreenHeight > res.iHeight) {
 +    CLog::Log(LOGNOTICE, "%s::%s Scaling interfaces of size %dx%d to full screen", CLASSNAME, __func__, res.iWidth, res.iHeight);
 +    SetScreenScale(res.iWidth, res.iHeight, true);
++  }else{
++    CLog::Log(LOGNOTICE, "%s::%s Set native size resolution %dx%d", CLASSNAME, __func__, res.iWidth, res.iHeight);
++    SetScreenScale(res.iWidth, res.iHeight, false);
    }
 +}
  
@@ -557,13 +598,13 @@ index d8dc511..15a6429 100644
 +  CLog::Log(LOGDEBUG, "%s::%s", CLASSNAME, __func__);
 +
 +  std::string hpd_state;
-+  SysfsUtils::GetString("/sys/class/amhdmitx/amhdmitx0/disp_cap", hpd_state);
++  SysfsUtils::GetString("/sys/class/amhdmitx/amhdmitx0/hpd_state", hpd_state);
 +  StringUtils::Trim(hpd_state);
 +  return hpd_state == "1";
  }
  
  void CEGLNativeTypeAmlogic::SetFramebufferResolution(const RESOLUTION_INFO &res) const
-@@ -282,8 +367,8 @@ void CEGLNativeTypeAmlogic::SetFramebufferResolution(int width, int height) cons
+@@ -282,8 +373,8 @@ void CEGLNativeTypeAmlogic::SetFramebufferResolution(int width, int height) cons
      {
        vinfo.xres = width;
        vinfo.yres = height;
