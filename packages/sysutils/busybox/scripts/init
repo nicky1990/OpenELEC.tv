@@ -554,6 +554,26 @@
     fi
   }
 
+  check_zip_update() {
+    progress "Checking for updates (zip)"
+
+    UPDATE_ZIP=`ls -1 "$UPDATE_DIR"/*.zip 2>/dev/null | head -n 1`
+    if [ -f "$UPDATE_ZIP" ] ; then
+        echo "Found new .zip archive. update..."
+        mkdir -p /storage/recovery
+        echo "Mount cache partition"
+        mount -t ext4 -o rw /dev/cache /storage/recovery
+        echo "Move firmware into  cache partition"
+        mv $UPDATE_ZIP /storage/recovery
+        echo -e "--update_package=/cache/update.zip\n--wipe_cache" > /storage/recovery/recovery/command
+        sync
+        umount /storage/recovery
+        rm -rf /storage/recovery
+        echo "Update firmware via recovery"
+        /usr/bin/systemctl reboot recovery
+    fi
+  }
+
   check_update() {
     progress "Checking for updates"
 
@@ -704,6 +724,7 @@
       mount_flash \
       load_splash \
       mount_storage \
+      check_zip_update \
       check_update \
       prepare_sysroot; do
     $BOOT_STEP
