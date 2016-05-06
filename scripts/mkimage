@@ -207,6 +207,17 @@ elif [ "$BOOTLOADER" = "u-boot" ]; then
     echo "image: copying files to part1..."
     mcopy $TARGET_IMG/$IMAGE_NAME.kernel "::/$KERNEL_NAME"
     mcopy $TARGET_IMG/$IMAGE_NAME.system ::/SYSTEM
+    if [ -f $TARGET_IMG/$IMAGE_NAME.dtb ]; then
+      echo "image: copy dtb if exist to part1..."
+      mcopy $TARGET_IMG/$IMAGE_NAME.dtb ::/dtb.img
+    fi
+
+    echo `ls $INSTALL_SRC_DIR`
+    if [ -f "$INSTALL_SRC_DIR/aml_autoscript.src" ]; then
+      cat "$INSTALL_SRC_DIR/aml_autoscript.src" > "$OE_TMP/aml_autoscript.src"
+      mkimage -A arm -O linux -T script -C none -d "$OE_TMP/aml_autoscript.src" "$OE_TMP/aml_autoscript"
+      mcopy "$OE_TMP/aml_autoscript" "::/aml_autoscript"
+    fi
 
     if [ -n "$UBOOT_SYSTEM" -a -f "$RELEASE_DIR/3rdparty/bootloader/u-boot-$UBOOT_SYSTEM.img" ]; then
       mcopy "$RELEASE_DIR/3rdparty/bootloader/u-boot-$UBOOT_SYSTEM.img" ::/u-boot.img
