@@ -1,8 +1,8 @@
 #!/bin/sh
 
-for x in $(cat /proc/cmdline); do
-  case ${x} in
-    hdmimode=*) export mode=${x#*=} ;;
+for arg in $(cat /proc/cmdline); do
+  case ${arg} in
+    hdmimode=*) export mode=${arg#*=} ;;
     scaling_governor=*) scaling_governor="${arg#*=}" ;;
     scaling_min_freq=*) scaling_min_freq="${arg#*=}" ;;
     scaling_max_freq=*) scaling_max_freq="${arg#*=}" ;;
