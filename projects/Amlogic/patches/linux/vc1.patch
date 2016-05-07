@@ -1,0 +1,13 @@
+diff --git a/drivers/amlogic/deinterlace/deinterlace.c b/drivers/amlogic/deinterlace/deinterlace.c
+index 3bab6ed..496eaf4 100644
+--- a/drivers/amlogic/deinterlace/deinterlace.c
++++ b/drivers/amlogic/deinterlace/deinterlace.c
+@@ -157,7 +157,7 @@ static const char version_s[] = "2015-8-03a";
+ static unsigned char boot_init_flag;
+ static int receiver_is_amvideo = 1;
+ 
+-static unsigned char new_keep_last_frame_enable;
++static unsigned char new_keep_last_frame_enable = 0;
+ static int bypass_state = 1;
+ static int bypass_prog;
+ static int bypass_hd_prog;
