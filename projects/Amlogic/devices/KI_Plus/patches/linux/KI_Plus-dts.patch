@@ -1,5 +1,5 @@
 diff --git a/arch/arm64/boot/dts/amlogic/gxbb_p200.dts b/arch/arm64/boot/dts/amlogic/gxbb_p200.dts
-index 803045e..14949d3 100644
+index 803045e..2e5a0ff 100644
 --- a/arch/arm64/boot/dts/amlogic/gxbb_p200.dts
 +++ b/arch/arm64/boot/dts/amlogic/gxbb_p200.dts
 @@ -55,7 +55,7 @@
@@ -97,7 +97,7 @@ index 803045e..14949d3 100644
      sd{
          compatible = "amlogic, aml_sd_emmc";
          dev_name = "aml_newsd.0";
-@@ -435,23 +436,23 @@
+@@ -435,7 +436,7 @@
              ocr_avail = <0x200080>;          /**VDD voltage 3.3 ~ 3.4 */
              caps = "MMC_CAP_8_BIT_DATA","MMC_CAP_MMC_HIGHSPEED",
  			"MMC_CAP_SD_HIGHSPEED", "MMC_CAP_NONREMOVABLE","MMC_CAP_1_8V_DDR",
@@ -106,9 +106,7 @@ index 803045e..14949d3 100644
              caps2 = "MMC_CAP2_HS200";
  			f_min = <300000>;
              f_max = <200000000>;
-             max_req_size = <0x20000>;          /**256KB*/
--//            gpio_dat3 = "BOOT_3"
-+            gpio_dat3 = "BOOT_3"
+@@ -444,14 +445,14 @@
  		gpio_dat3 = <&gpio       BOOT_3      GPIO_ACTIVE_HIGH>;
  		hw_reset =  <&gpio       BOOT_9      GPIO_ACTIVE_HIGH>;
              card_type = <1>; /* 1:mmc card(include eMMC), 2:sd card(include tSD), */
