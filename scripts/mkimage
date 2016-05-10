@@ -153,7 +153,7 @@ elif [ "$BOOTLOADER" = "bcm2835-firmware" ]; then
   # create bootloader configuration
     echo "image: creating bootloader configuration..."
     cat << EOF > "$OE_TMP"/cmdline.txt
-boot=/dev/mmcblk0p1 disk=/dev/mmcblk0p2 quiet $EXTRA_CMDLINE
+boot=LABEL=BOOT disk=LABEL=STORAGE quiet $EXTRA_CMDLINE
 EOF
 
     mcopy "$OE_TMP/cmdline.txt" ::

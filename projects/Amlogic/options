@@ -363,7 +363,7 @@
 
     aarch64)
       # set the addon dirs
-      ADDON_PATH="$ADDON_VERSION/Amlogic/$TARGET_ARCH"
+      ADDON_PATH="$ADDON_VERSION/$TARGET_ARCH"
       ADDON_URL="$ADDON_SERVER_URL/$ADDON_PATH"
       ;;
   esac
