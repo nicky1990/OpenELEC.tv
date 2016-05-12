@@ -12,6 +12,3 @@
 
   # Additional options that will be passed to Android mkbootimg
     ANDROID_BOOTIMG_OPTIONS="--base 0x0 --kernel_offset 0x1080000"
-
-  # kernel image name
-    KERNEL_NAME="kernel.img"

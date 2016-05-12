@@ -32,7 +32,7 @@ PKG_LONGDESC="This package contains a precompiled kernel image and the modules."
 case "$LINUX" in
   amlogic)
     if [ "$TARGET_KERNEL_ARCH" = "arm64" ]; then
-      PKG_VERSION="amlogic-3.14-63371bc"
+      PKG_VERSION="amlogic-3.14-24336d7"
       PKG_URL="http://amlinux.ru/source/$PKG_NAME-$PKG_VERSION.tar.gz"
     else
       PKG_VERSION="amlogic-3.10-c8d5b2f"
@@ -43,6 +43,11 @@ case "$LINUX" in
     PKG_VERSION="cuboxi-3.14-ea83bda"
     PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
     PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET imx6-status-led imx6-soc-fan"
+    ;;
+  rpi)
+    PKG_VERSION="f6f3129"
+    PKG_GIT_URL="https://github.com/raspberrypi/linux.git"
+    PKG_GIT_BRANCH="rpi-4.4.y"
     ;;
   *)
     PKG_VERSION="4.4.8"
