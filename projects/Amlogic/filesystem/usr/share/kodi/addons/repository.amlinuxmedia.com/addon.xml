@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="repository.amlinuxmedia.com"
-		name="[COLOR FF757677]Open[/COLOR][COLOR FF8ABEE2]ELEC[/COLOR] Add-ons (aarch64)"
+		name="[COLOR FF757677]Amlinux[/COLOR][COLOR FF8ABEE2]MEDIA[/COLOR] Add-ons (aarch64)"
 		version="7.0.0"
 		provider-name="Team [COLOR FF757677]Open[/COLOR][COLOR FF8ABEE2]ELEC[/COLOR]">
 	<extension point="xbmc.addon.repository"
