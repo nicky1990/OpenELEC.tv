@@ -250,6 +250,11 @@ fi
     cp -f $BUILD/linux-$(kernel_version)/arch/$TARGET_KERNEL_ARCH/boot/dtb.img $TARGET_IMG/$IMAGE_NAME.dtb
   fi
 
+# copy dtb to target dir (add 20160517)
+  if [ -f $BUILD/linux-$(kernel_version)/$ANDROID_BOOTIMG_SECOND ]; then
+    cp -f $BUILD/linux-$(kernel_version)/$ANDROID_BOOTIMG_SECOND $TARGET_IMG/$IMAGE_NAME.dtb
+  fi
+
 # create squashfs file
   if [ -z "$SQUASHFS_COMPRESSION" ]; then
     SQUASHFS_COMPRESSION="gzip"

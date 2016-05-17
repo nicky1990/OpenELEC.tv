@@ -109,17 +109,16 @@ fi
   SECTORS=$(( $SYSTEM_SIZE * 1024 * 1024 / 512 / $HEADS / $TRACKS ))
   
   shopt -s expand_aliases  # enables alias expansion in script
-#  alias mformat="mformat -i $DISK@@$OFFSET -h $HEADS -t $TRACKS -s $SECTORS"
+  alias mformat="mformat -i $DISK@@$OFFSET -h $HEADS -t $TRACKS -s $SECTORS"
   alias mcopy="mcopy -i $DISK@@$OFFSET"
   alias mmd="mmd -i $DISK@@$OFFSET"
 
-#  if [ "$BOOTLOADER" = "syslinux" ]; then
-#    mformat ::
-     mformat -i $DISK@@$OFFSET -h $HEADS -t $TRACKS -s $SECTORS -v $LABEL_part1
-#  elif [ "$BOOTLOADER" = "bcm2835-firmware" -o "$BOOTLOADER" = "u-boot" ]; then
-#    mformat ::
-#  fi
-#  sync
+  if [ "$BOOTLOADER" = "syslinux" ]; then
+    mformat -v "$FAT_VOL_ID" -N "$FAT_VOL_ID" ::
+  elif [ "$BOOTLOADER" = "bcm2835-bootloader" -o "$BOOTLOADER" = "u-boot" ]; then
+    mformat -v $LABEL_part1 ::
+  fi
+  sync
 
 if [ "$BOOTLOADER" = "syslinux" ]; then
   # create bootloader configuration
