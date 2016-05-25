@@ -12,3 +12,9 @@
 
   # Additional options that will be passed to Android mkbootimg
     ANDROID_BOOTIMG_OPTIONS="--base 0x0 --kernel_offset 0x1080000"
+  
+  # additional drivers to install:
+  # for a list of additinoal drivers see packages/linux-drivers
+  # Space separated list is supported,
+  # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
+    ADDITIONAL_DRIVERS="RTL8723BS"
