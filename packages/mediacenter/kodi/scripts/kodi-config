@@ -22,10 +22,6 @@
 # done in kodi on addon install. but just in case..
 chmod +x /storage/.kodi/addons/*/bin/*
 
-#Workaround for AML S905, Disable Auto-Switching, use Frame Rate Automation Policy 2 to allow Kodi dynamic refresh switching.
-echo 2 > /sys/class/tv/policy_fr_auto
-echo 0 > /sys/class/tv/policy_fr_auto_switch
-
 # hack: update RSSnews.xml in userdata
 if [ -f /storage/.kodi/userdata/RssFeeds.xml ]; then
   sed -e "s,http://openelec.tv/news?format=feed&type=rss,http://feeds.openelec.tv/news,g" \
