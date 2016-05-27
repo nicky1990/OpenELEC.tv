@@ -354,8 +354,10 @@
       ;;
 
     aarch64)
+      # Addon Server Url
+      ADDON_SERVER_URL="https://raw.github.com"
       # set the addon dirs
-      ADDON_PATH="$ADDON_VERSION/Amlogic/$TARGET_ARCH"
+      ADDON_PATH="surkovalex/unofficial-addons/$ADDON_VERSION/Amlogic/$TARGET_ARCH"
       ADDON_URL="$ADDON_SERVER_URL/$ADDON_PATH"
       ;;
   esac
