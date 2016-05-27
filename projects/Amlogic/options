@@ -63,14 +63,6 @@
       # Specifies which floating-point ABI to use. Permissible values are:
       # soft softfp hard
       TARGET_FLOAT="hard"
-
-      # TARGET_FPU:
-      # This specifies what floating point hardware (or hardware emulation) is
-      # available on the target. Permissible names are:
-      # fpa fpe2 fpe3 maverick vfp vfpv3 vfpv3-fp16 vfpv3-d16 vfpv3-d16-fp16
-      # vfpv3xd vfpv3xd-fp16 neon neon-fp16 vfpv4 vfpv4-d16 fpv4-sp-d16
-      # neon-vfpv4.
-      TARGET_FPU="neon"
       ;;
   esac
 
@@ -154,7 +146,7 @@
   ALSA_SUPPORT="yes"
 
 # build and install PulseAudio support (yes / no)
-  PULSEAUDIO_SUPPORT="no"
+  PULSEAUDIO_SUPPORT="yes"
 
 # build and install espeak support (yes / no)
   ESPEAK_SUPPORT="yes"
@@ -362,8 +354,10 @@
       ;;
 
     aarch64)
+      # Addon Server Url
+      ADDON_SERVER_URL="https://raw.github.com"
       # set the addon dirs
-      ADDON_PATH="$ADDON_VERSION/Amlogic/$TARGET_ARCH"
+      ADDON_PATH="surkovalex/unofficial-addons/$ADDON_VERSION/Amlogic/$TARGET_ARCH"
       ADDON_URL="$ADDON_SERVER_URL/$ADDON_PATH"
       ;;
   esac
@@ -373,3 +367,6 @@
 # extra build dependeices
   EXTRA_DEPS="mkimage"
   EXTRA_DEPS_PKG="u-boot-tools"
+
+# kernel image name
+  KERNEL_NAME="kernel.img"
