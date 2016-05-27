@@ -1,0 +1,27 @@
+From da48094fcb51c815abf81a6b7b0d48cb1049ed35 Mon Sep 17 00:00:00 2001
+From: alex <surkov.alex@gmail.com>
+Date: Thu, 26 May 2016 14:22:08 +0300
+Subject: [PATCH] Fix for DTS-HD passthrough (issue 43)
+
+---
+ drivers/amlogic/audiodsp/audiodsp_module.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/amlogic/audiodsp/audiodsp_module.c b/drivers/amlogic/audiodsp/audiodsp_module.c
+index a0ca136..1cab15a 100644
+--- a/drivers/amlogic/audiodsp/audiodsp_module.c
++++ b/drivers/amlogic/audiodsp/audiodsp_module.c
+@@ -808,6 +808,10 @@ static ssize_t digital_codec_store(struct class *class,
+ 	if (buf) {
+ 		if (kstrtoint(buf, 10, &digital_codec))
+ 			pr_info("kstrtoint err %s\n", __func__);
++		if (digital_codec == 5) {
++		    digital_codec = 8;
++		    pr_info("fixed IEC958 type %s to %s\n", codec_str[5], codec_str[digital_codec]);
++		}
+ 		if (digital_codec < SUPPORT_TYPE_NUM) {
+ 			IEC958_mode_codec = digital_codec;
+ 			pr_info("IEC958_mode_codec= %d, IEC958 type %s\n",
+-- 
+1.7.10.4
+
