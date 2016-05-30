@@ -32,15 +32,3 @@ index 660d355..b163055 100644
    if (m_fProcTemperature == NULL)
      m_fProcTemperature = fopen("/proc/acpi/thermal_zone/THRM/temperature", "r");
    if (m_fProcTemperature == NULL)
-@@ -609,7 +616,10 @@ bool CCPUInfo::getTemperature(CTemperature& temperature)
-     if (!ret)
-     {
-       ret = fscanf(m_fProcTemperature, "%d", &value);
--      value = value / 1000;
-+#ifndef HAS_LIBAMCODEC
-+      if (!aml_present())
-+        value = value / 1000;
-+#endif
-       scale = 'c';
-       ret++;
-     }

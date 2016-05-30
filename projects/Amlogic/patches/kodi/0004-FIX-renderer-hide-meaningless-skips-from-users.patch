@@ -1,0 +1,26 @@
+From 970e90d0f4e0b9b0ce8c6b606d002be81f5ecaf1 Mon Sep 17 00:00:00 2001
+From: "Chris \\\"Koying\\\" Browet" <cbro@semperpax.com>
+Date: Fri, 19 Dec 2014 12:30:04 +0100
+Subject: [PATCH 04/28] FIX: [renderer] hide meaningless skips from users
+
+---
+ xbmc/cores/VideoRenderers/RenderManager.cpp |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/xbmc/cores/VideoRenderers/RenderManager.cpp b/xbmc/cores/VideoRenderers/RenderManager.cpp
+index 7a99ac4..e966c12 100644
+--- a/xbmc/cores/VideoRenderers/RenderManager.cpp
++++ b/xbmc/cores/VideoRenderers/RenderManager.cpp
+@@ -1196,7 +1196,8 @@ void CXBMCRenderManager::PrepareNextRender()
+     while(m_queued.front() != idx)
+     {
+       requeue(m_discard, m_queued);
+-      m_QueueSkip++;
++      if (m_format != RENDER_FMT_BYPASS)  // skips scares users ;)
++        m_QueueSkip++;
+     }
+ 
+     m_presentstep   = PRESENT_FLIP;
+-- 
+1.7.10.4
+

@@ -1,0 +1,26 @@
+From 1a9c83dfa25bf870b2276cd58b0a69308d306fc9 Mon Sep 17 00:00:00 2001
+From: Alex Deryskyba <alex@codesnake.com>
+Date: Mon, 2 Mar 2015 09:48:14 +0100
+Subject: [PATCH 26/28] [aml] Fix stuttering during a playback of a video with
+ 23.976 FPS
+
+---
+ xbmc/cores/dvdplayer/DVDCodecs/Video/AMLCodec.cpp |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/xbmc/cores/dvdplayer/DVDCodecs/Video/AMLCodec.cpp b/xbmc/cores/dvdplayer/DVDCodecs/Video/AMLCodec.cpp
+index 7236444..6cf17a7 100644
+--- a/xbmc/cores/dvdplayer/DVDCodecs/Video/AMLCodec.cpp
++++ b/xbmc/cores/dvdplayer/DVDCodecs/Video/AMLCodec.cpp
+@@ -1989,7 +1989,7 @@ void CAMLCodec::Process()
+ 
+         double error = app_pts - (double)pts_video/PTS_FREQ;
+         double abs_error = fabs(error);
+-        if (abs_error > 0.125)
++        if (abs_error > 0)
+         {
+           //CLog::Log(LOGDEBUG, "CAMLCodec::Process pts diff = %f", error);
+           if (abs_error > 0.150)
+-- 
+1.7.10.4
+
