@@ -1,26 +1,26 @@
-From 993592beebd6502a192eace6f52d0d45bfd10e6d Mon Sep 17 00:00:00 2001
-From: Alex Deryskyba <alex@codesnake.com>
-Date: Fri, 11 Dec 2015 23:44:42 +0100
-Subject: [PATCH 4/6] [keyboard] Make Escape key execute back action
+From 5ed3d5da5069576ba431c835fbe971a3721d1f5c Mon Sep 17 00:00:00 2001
+From: alex <surkov.alex@gmail.com>
+Date: Thu, 26 May 2016 10:40:11 +0300
+Subject: [PATCH 24/28] [keyboard] Make Escape key execute back action
 
 ---
  system/keymaps/keyboard.xml |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/system/keymaps/keyboard.xml b/system/keymaps/keyboard.xml
-index f420c48..160abf1 100644
+index 9833cff..d28e341 100644
 --- a/system/keymaps/keyboard.xml
 +++ b/system/keymaps/keyboard.xml
-@@ -68,7 +68,7 @@
+@@ -50,7 +50,7 @@
        <m>Menu</m>
-       <m mod="ctrl">ActivateWindow(PlayerControls)</m>
+       <n mod="ctrl">ActivateWindow(PlayerControls)</n>
        <s>ActivateWindow(shutdownmenu)</s>
 -      <escape>PreviousMenu</escape>
 +      <escape>Back</escape>
        <i>Info</i>
        <menu>ContextMenu</menu>
        <menu mod="longpress">Menu</menu>
-@@ -209,6 +209,7 @@
+@@ -187,6 +187,7 @@
        <backspace>Backspace</backspace>
        <browser_back>Backspace</browser_back>
        <browser_back mod="longpress">PreviousMenu</browser_back>

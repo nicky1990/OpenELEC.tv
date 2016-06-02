@@ -1,0 +1,24 @@
+From df2c5f16b4735540c939a8e1d9c078277bef9d72 Mon Sep 17 00:00:00 2001
+From: Jamie Coldhill <wrxtasy@amnet.net.au>
+Date: Sun, 15 May 2016 20:41:51 +0800
+Subject: [PATCH 15/28] [PVR]: fix EPG search - Krypton backport
+
+---
+ xbmc/pvr/windows/GUIWindowPVRSearch.cpp |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/xbmc/pvr/windows/GUIWindowPVRSearch.cpp b/xbmc/pvr/windows/GUIWindowPVRSearch.cpp
+index f0786f7..9ee1207 100644
+--- a/xbmc/pvr/windows/GUIWindowPVRSearch.cpp
++++ b/xbmc/pvr/windows/GUIWindowPVRSearch.cpp
+@@ -159,6 +159,7 @@ void CGUIWindowPVRSearch::OnPrepareFileItems(CFileItemList &items)
+ 
+     bAddSpecialSearchItem = true;
+ 
++    items.Clear();
+     CGUIDialogProgress* dlgProgress = (CGUIDialogProgress*)g_windowManager.GetWindow(WINDOW_DIALOG_PROGRESS);
+     if (dlgProgress)
+     {
+-- 
+1.7.10.4
+

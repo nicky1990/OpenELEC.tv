@@ -1,0 +1,80 @@
+diff --git a/skins/Default/720p/service-OpenELEC-Settings-mainWindow.xml b/skins/Default/720p/service-OpenELEC-Settings-mainWindow.xml
+index 3a98a32..9612ffa 100644
+--- a/skins/Default/720p/service-OpenELEC-Settings-mainWindow.xml
++++ b/skins/Default/720p/service-OpenELEC-Settings-mainWindow.xml
+@@ -312,16 +312,38 @@
+                         <align>left</align>
+                         <aligny>center</aligny>
+                         <label>$INFO[Container(5533).Property(Arch)]</label>
+-                    </control>	
++                    </control>
++                    <control type="label">
++                        <left>20</left>
++                        <top>86</top>
++                        <width>400</width>
++                        <height>16</height>
++                        <font>font12</font>
++                        <textcolor>blue</textcolor>
++                        <align>left</align>
++                        <aligny>center</aligny>
++                        <label>Device:</label>
++                    </control>
++                    <control type="label">
++                        <left>140</left>
++                        <top>86</top>
++                        <width>400</width>
++                        <height>16</height>
++                        <font>font12</font>
++                        <textcolor>white</textcolor>
++                        <align>left</align>
++                        <aligny>center</aligny>
++                        <label>$INFO[Container(5533).Property(device)]</label>
++                    </control>
+                     <control type="textbox">
+                         <left>20</left>
+-                        <top>117</top>
++                        <top>127</top>
+                         <width>550</width>
+                         <height>100</height>
+                         <font>font10</font>
+                         <textcolor>white</textcolor>
+                         <label>$ADDON[service.openelec.settings 609]</label>
+-                    </control>		
++                    </control>
+                     <control type="textbox">
+                         <left>20</left>
+                         <top>200</top>
+@@ -333,7 +355,7 @@
+                     </control>
+                     <control type="image">
+                         <left>20</left>
+-                        <top>100</top>
++                        <top>105</top>
+                         <width>535</width>
+                         <height>2</height>
+                         <texture>default/blue_line.png</texture>
+@@ -1359,3 +1381,4 @@
+         </control>		
+     </controls>
+ </window>
++
+diff --git a/src/resources/lib/oeWindows.py b/src/resources/lib/oeWindows.py
+index 60fb523..a98b9ae 100644
+--- a/src/resources/lib/oeWindows.py
++++ b/src/resources/lib/oeWindows.py
+@@ -99,6 +99,7 @@ class mainWindow(xbmcgui.WindowXMLDialog):
+             self.setProperty('distri', self.oe.DISTRIBUTION)
+             self.setProperty('version', self.oe.VERSION)
+             self.setProperty('build', self.oe.BUILD)
++            self.setProperty('device', self.oe.DEV)
+             self.setProperty('DIST_MEDIA', 'default')
+             if os.path.exists(self.oe.__media__ + self.oe.DISTRIBUTION):
+                 self.setProperty('DIST_MEDIA', self.oe.DISTRIBUTION)
+@@ -504,6 +505,7 @@ class wizard(xbmcgui.WindowXMLDialog):
+             self.setProperty('distri', self.oe.DISTRIBUTION)
+             self.setProperty('version', self.oe.VERSION)
+             self.setProperty('build', self.oe.BUILD)
++            self.setProperty('device', self.oe.DEV)
+             self.setProperty('DIST_MEDIA', 'default')
+             if os.path.exists(self.oe.__media__ + self.oe.DISTRIBUTION):
+                 self.setProperty('DIST_MEDIA', self.oe.DISTRIBUTION)

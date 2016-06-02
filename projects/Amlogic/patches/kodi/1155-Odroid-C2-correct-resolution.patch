@@ -1,35 +1,8 @@
-diff --git a/xbmc/cores/dvdplayer/DVDCodecs/DVDFactoryCodec.cpp b/xbmc/cores/dvdplayer/DVDCodecs/DVDFactoryCodec.cpp
-index 84e9ef1..7f489b0 100644
---- a/xbmc/cores/dvdplayer/DVDCodecs/DVDFactoryCodec.cpp
-+++ b/xbmc/cores/dvdplayer/DVDCodecs/DVDFactoryCodec.cpp
-@@ -209,20 +209,9 @@ CDVDVideoCodec* CDVDFactoryCodec::CreateVideoCodec(CDVDStreamInfo &hint, const C
- 
- #if defined(HAS_LIBAMCODEC)
-   // amcodec can handle dvd playback.
--  if (!hint.software && CSettings::GetInstance().GetBool(CSettings::SETTING_VIDEOPLAYER_USEAMCODEC))
-+  if ( !hint.software )
-   {
--    switch(hint.codec)
--    {
--      case AV_CODEC_ID_MPEG4:
--      case AV_CODEC_ID_MSMPEG4V2:
--      case AV_CODEC_ID_MSMPEG4V3:
--        // Avoid h/w decoder for SD; Those files might use features
--        // not supported and can easily be soft-decoded
--        if (hint.width <= 800)
--          break;
--      default:
--        if ( (pCodec = OpenCodec(new CDVDVideoCodecAmlogic(), hint, options)) ) return pCodec;
--    }
-+    if ( (pCodec = OpenCodec(new CDVDVideoCodecAmlogic(), hint, options)) ) return pCodec;
-   }
- #endif
- 
 diff --git a/xbmc/cores/dvdplayer/DVDCodecs/Video/AMLCodec.cpp b/xbmc/cores/dvdplayer/DVDCodecs/Video/AMLCodec.cpp
-index 7236444..aa8b688 100644
+index fba0680..b84a000 100644
 --- a/xbmc/cores/dvdplayer/DVDCodecs/Video/AMLCodec.cpp
 +++ b/xbmc/cores/dvdplayer/DVDCodecs/Video/AMLCodec.cpp
-@@ -361,7 +361,7 @@ void dumpfile_write(am_private_t *para, void* buf, int bufsiz)
+@@ -382,7 +382,7 @@ void dumpfile_write(am_private_t *para, void* buf, int bufsiz)
    }
  
    if (para->dumpdemux && para->dumpfile != -1)
@@ -38,7 +11,7 @@ index 7236444..aa8b688 100644
  }
  
  /*************************************************************************/
-@@ -387,13 +387,14 @@ static int64_t get_pts_video()
+@@ -408,13 +408,14 @@ static int64_t get_pts_video()
  
  static int set_pts_pcrscr(int64_t value)
  {
@@ -54,7 +27,7 @@ index 7236444..aa8b688 100644
      close(fd);
      return 0;
    }
-@@ -714,7 +715,7 @@ int write_av_packet(am_private_t *para, am_packet_t *pkt)
+@@ -734,7 +735,7 @@ int write_av_packet(am_private_t *para, am_packet_t *pkt)
          }
          pkt->newflag = 0;
      }
@@ -63,7 +36,7 @@ index 7236444..aa8b688 100644
      buf = pkt->data;
      size = pkt->data_size ;
      if (size == 0 && pkt->isvalid) {
-@@ -1562,7 +1563,7 @@ bool CAMLCodec::OpenDecoder(CDVDStreamInfo &hints)
+@@ -1573,7 +1574,7 @@ bool CAMLCodec::OpenDecoder(CDVDStreamInfo &hints)
        // h264 in an avi file
        if (m_hints.ptsinvalid)
          am_private->gcodec.param = (void*)(EXTERNAL_PTS | SYNC_OUTSIDE);
@@ -72,7 +45,7 @@ index 7236444..aa8b688 100644
      case VFORMAT_REAL:
        am_private->stream_type = AM_STREAM_RM;
        am_private->vcodec.noblock = 1;
-@@ -1630,7 +1631,7 @@ bool CAMLCodec::OpenDecoder(CDVDStreamInfo &hints)
+@@ -1643,7 +1644,7 @@ bool CAMLCodec::OpenDecoder(CDVDStreamInfo &hints)
    g_renderManager.RegisterRenderUpdateCallBack((const void*)this, RenderUpdateCallBack);
    g_renderManager.RegisterRenderFeaturesCallBack((const void*)this, RenderFeaturesCallBack);
  
@@ -81,7 +54,7 @@ index 7236444..aa8b688 100644
  
    std::string strScaler;
    SysfsUtils::GetString("/sys/class/ppmgr/ppscaler", strScaler);
-@@ -2186,7 +2187,6 @@ void CAMLCodec::SetVideoRect(const CRect &SrcRect, const CRect &DestRect)
+@@ -2238,7 +2239,6 @@ void CAMLCodec::SetVideoRect(const CRect &SrcRect, const CRect &DestRect)
          int diff = (int) ((dst_rect.Height() - dst_rect.Width()) / 2);
          dst_rect = CRect(DestRect.x1 - diff, DestRect.y1, DestRect.x2 + diff, DestRect.y2);
        }
@@ -89,7 +62,7 @@ index 7236444..aa8b688 100644
    }
  
    if (m_dst_rect != dst_rect)
-@@ -2208,7 +2208,7 @@ void CAMLCodec::SetVideoRect(const CRect &SrcRect, const CRect &DestRect)
+@@ -2260,7 +2260,7 @@ void CAMLCodec::SetVideoRect(const CRect &SrcRect, const CRect &DestRect)
  #ifdef TARGET_ANDROID
    display = m_display_rect;
  #else
@@ -98,7 +71,7 @@ index 7236444..aa8b688 100644
  #endif
    if (gui != display)
    {
-@@ -2280,6 +2280,8 @@ void CAMLCodec::SetVideoRect(const CRect &SrcRect, const CRect &DestRect)
+@@ -2332,6 +2332,8 @@ void CAMLCodec::SetVideoRect(const CRect &SrcRect, const CRect &DestRect)
    std::string s_gui = StringUtils::Format("%i,%i,%i,%i",
      (int)gui.x1, (int)gui.y1,
      (int)gui.Width(), (int)gui.Height());
@@ -108,7 +81,7 @@ index 7236444..aa8b688 100644
    CLog::Log(LOGDEBUG, "CAMLCodec::SetVideoRect:gui(%s)", s_gui.c_str());
    CLog::Log(LOGDEBUG, "CAMLCodec::SetVideoRect:m_dst_rect(%s)", s_m_dst_rect.c_str());
 diff --git a/xbmc/utils/AMLUtils.cpp b/xbmc/utils/AMLUtils.cpp
-index 1b54435..44e6caa 100644
+index cb49781..8024317 100644
 --- a/xbmc/utils/AMLUtils.cpp
 +++ b/xbmc/utils/AMLUtils.cpp
 @@ -79,7 +79,7 @@ bool aml_wired_present()
@@ -120,7 +93,7 @@ index 1b54435..44e6caa 100644
    if (!aml_present())
      return false;
  
-@@ -195,7 +195,8 @@ bool aml_support_h264_4k2k()
+@@ -216,7 +216,8 @@ bool aml_support_h264_4k2k()
  
  void aml_set_audio_passthrough(bool passthrough)
  {
@@ -129,8 +102,8 @@ index 1b54435..44e6caa 100644
 +  SysfsUtils::SetString("/sys/class/audiodsp/digital_raw", passthrough ? "2":"0");
  }
  
- void aml_probe_hdmi_audio()
-@@ -213,7 +214,7 @@ void aml_probe_hdmi_audio()
+ int aml_get_digital_raw()
+@@ -251,7 +252,7 @@ void aml_probe_hdmi_audio()
    {
      char valstr[1024] = {0};
  
@@ -139,7 +112,7 @@ index 1b54435..44e6caa 100644
      valstr[strlen(valstr)] = '\0';
      close(fd);
  
-@@ -348,6 +349,60 @@ bool aml_mode_to_resolution(const char *mode, RESOLUTION_INFO *res)
+@@ -386,6 +387,60 @@ bool aml_mode_to_resolution(const char *mode, RESOLUTION_INFO *res)
      res->fRefreshRate = 50;
      res->dwFlags = D3DPRESENTFLAG_PROGRESSIVE;
    }
@@ -200,7 +173,7 @@ index 1b54435..44e6caa 100644
    else if (StringUtils::EqualsNoCase(fromMode, "720p") || StringUtils::EqualsNoCase(fromMode, "720p60hz"))
    {
      res->iWidth = 1280;
-@@ -393,6 +448,24 @@ bool aml_mode_to_resolution(const char *mode, RESOLUTION_INFO *res)
+@@ -431,6 +486,24 @@ bool aml_mode_to_resolution(const char *mode, RESOLUTION_INFO *res)
      res->fRefreshRate = 24;
      res->dwFlags = D3DPRESENTFLAG_PROGRESSIVE;
    }
@@ -225,7 +198,7 @@ index 1b54435..44e6caa 100644
    else if (StringUtils::EqualsNoCase(fromMode, "1080p30hz"))
    {
      res->iWidth = 1920;
-@@ -501,7 +574,7 @@ bool aml_mode_to_resolution(const char *mode, RESOLUTION_INFO *res)
+@@ -539,7 +612,7 @@ bool aml_mode_to_resolution(const char *mode, RESOLUTION_INFO *res)
      res->fRefreshRate = 30;
      res->dwFlags = D3DPRESENTFLAG_PROGRESSIVE;
    }
@@ -234,7 +207,7 @@ index 1b54435..44e6caa 100644
    {
      res->iWidth = 1920;
      res->iHeight= 1080;
-@@ -510,7 +583,16 @@ bool aml_mode_to_resolution(const char *mode, RESOLUTION_INFO *res)
+@@ -548,7 +621,16 @@ bool aml_mode_to_resolution(const char *mode, RESOLUTION_INFO *res)
      res->fRefreshRate = 50;
      res->dwFlags = D3DPRESENTFLAG_PROGRESSIVE;
    }
@@ -252,13 +225,13 @@ index 1b54435..44e6caa 100644
    {
      res->iWidth = 1920;
      res->iHeight= 1080;
-@@ -534,4 +616,3 @@ bool aml_mode_to_resolution(const char *mode, RESOLUTION_INFO *res)
+@@ -573,4 +655,3 @@ bool aml_mode_to_resolution(const char *mode, RESOLUTION_INFO *res)
  
    return res->iWidth > 0 && res->iHeight> 0;
  }
 -
 diff --git a/xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp b/xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp
-index d8dc511..cf04081 100644
+index f2361ab..4811666 100644
 --- a/xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp
 +++ b/xbmc/windowing/egl/EGLNativeTypeAmlogic.cpp
 @@ -23,13 +23,18 @@
@@ -281,7 +254,7 @@ index d8dc511..cf04081 100644
  CEGLNativeTypeAmlogic::CEGLNativeTypeAmlogic()
  {
    const char *env_framebuffer = getenv("FRAMEBUFFER");
-@@ -66,28 +71,37 @@ bool CEGLNativeTypeAmlogic::CheckCompatibility()
+@@ -70,28 +75,37 @@ bool CEGLNativeTypeAmlogic::CheckCompatibility()
  void CEGLNativeTypeAmlogic::Initialize()
  {
    aml_permissions();
@@ -322,7 +295,7 @@ index d8dc511..cf04081 100644
    m_nativeWindow = nativeWindow;
  
    SetFramebufferResolution(nativeWindow->width, nativeWindow->height);
-@@ -100,6 +114,8 @@ bool CEGLNativeTypeAmlogic::CreateNativeWindow()
+@@ -104,6 +118,8 @@ bool CEGLNativeTypeAmlogic::CreateNativeWindow()
  
  bool CEGLNativeTypeAmlogic::GetNativeDisplay(XBNativeDisplayType **nativeDisplay) const
  {
@@ -331,7 +304,7 @@ index d8dc511..cf04081 100644
    if (!nativeDisplay)
      return false;
    *nativeDisplay = (XBNativeDisplayType*) &m_nativeDisplay;
-@@ -108,6 +124,8 @@ bool CEGLNativeTypeAmlogic::GetNativeDisplay(XBNativeDisplayType **nativeDisplay
+@@ -112,6 +128,8 @@ bool CEGLNativeTypeAmlogic::GetNativeDisplay(XBNativeDisplayType **nativeDisplay
  
  bool CEGLNativeTypeAmlogic::GetNativeWindow(XBNativeWindowType **nativeWindow) const
  {
@@ -340,7 +313,7 @@ index d8dc511..cf04081 100644
    if (!nativeWindow)
      return false;
    *nativeWindow = (XBNativeWindowType*) &m_nativeWindow;
-@@ -116,11 +134,15 @@ bool CEGLNativeTypeAmlogic::GetNativeWindow(XBNativeWindowType **nativeWindow) c
+@@ -120,11 +138,15 @@ bool CEGLNativeTypeAmlogic::GetNativeWindow(XBNativeWindowType **nativeWindow) c
  
  bool CEGLNativeTypeAmlogic::DestroyNativeDisplay()
  {
@@ -356,7 +329,7 @@ index d8dc511..cf04081 100644
  #if defined(_FBDEV_WINDOW_H_)
    delete (fbdev_window*)m_nativeWindow, m_nativeWindow = NULL;
  #endif
-@@ -136,6 +158,8 @@ bool CEGLNativeTypeAmlogic::GetNativeResolution(RESOLUTION_INFO *res) const
+@@ -140,6 +162,8 @@ bool CEGLNativeTypeAmlogic::GetNativeResolution(RESOLUTION_INFO *res) const
  
  bool CEGLNativeTypeAmlogic::SetNativeResolution(const RESOLUTION_INFO &res)
  {
@@ -365,140 +338,21 @@ index d8dc511..cf04081 100644
  #if defined(_FBDEV_WINDOW_H_)
    if (m_nativeWindow)
    {
-@@ -144,52 +168,102 @@ bool CEGLNativeTypeAmlogic::SetNativeResolution(const RESOLUTION_INFO &res)
-   }
+@@ -149,15 +173,22 @@ bool CEGLNativeTypeAmlogic::SetNativeResolution(const RESOLUTION_INFO &res)
  #endif
  
--  switch((int)(0.5 + res.fRefreshRate))
--  {
--    default:
--    case 60:
--      switch(res.iScreenWidth)
--      {
--        default:
--        case 1280:
--          SetDisplayResolution("720p");
--          break;
--        case 1920:
--          if (res.dwFlags & D3DPRESENTFLAG_INTERLACED)
--            SetDisplayResolution("1080i");
--          else
--            SetDisplayResolution("1080p");
--          break;
--      }
--      break;
--    case 50:
--      switch(res.iScreenWidth)
--      {
--        default:
--        case 1280:
--          SetDisplayResolution("720p50hz");
--          break;
--        case 1920:
--          if (res.dwFlags & D3DPRESENTFLAG_INTERLACED)
--            SetDisplayResolution("1080i50hz");
--          else
--            SetDisplayResolution("1080p50hz");
--          break;
--      }
--      break;
--    case 30:
--      SetDisplayResolution("1080p30hz");
--      break;
--    case 24:
--      SetDisplayResolution("1080p24hz");
--      break;
+   std::string mode;
 +  bool result = false;
-+  int refreshRate = (int)(res.fRefreshRate);
-+
-+  switch (res.iScreenHeight) {
-+      case 720:
-+        switch(refreshRate) {
-+          case 23:
-+            result = SetDisplayResolution("720p23hz");
-+            break;
-+          case 24:
-+            result = SetDisplayResolution("720p24hz");
-+            break;
-+          case 25:
-+          case 50:
-+            result = SetDisplayResolution("720p50hz");
-+            break;
-+          case 29:
-+          case 59:
-+            result = SetDisplayResolution("720p59hz");
-+            break;
-+          case 30:
-+          case 60:
-+            result = SetDisplayResolution("720p60hz");
-+            break;
-+        }
-+        break;
-+      case 1080:
-+        switch(refreshRate) {
-+          case 23:
-+            result = SetDisplayResolution("1080p23hz");
-+            break;
-+          case 24:
-+            result = SetDisplayResolution("1080p24hz");
-+            break;
-+          case 25:
-+          case 50:
-+            if (res.dwFlags & D3DPRESENTFLAG_INTERLACED)
-+              result = SetDisplayResolution("1080i50hz");
-+            else
-+              result = SetDisplayResolution("1080p50hz");
-+            break;
-+          case 29:
-+          case 59:
-+            if (res.dwFlags & D3DPRESENTFLAG_INTERLACED)
-+              result = SetDisplayResolution("1080i59hz");
-+            else
-+              result = SetDisplayResolution("1080p59hz");
-+            break;
-+          case 30:
-+          case 60:
-+            if (res.dwFlags & D3DPRESENTFLAG_INTERLACED)
-+              result = SetDisplayResolution("1080i60hz");
-+            else
-+              result = SetDisplayResolution("1080p60hz");
-+            break;
-+        }
-+        break;
-+      case 2160:
-+        switch(refreshRate) {
-+          case 23:
-+            result = SetDisplayResolution("2160p23hz");
-+            break;
-+          case 24:
-+            result = SetDisplayResolution("2160p24hz");
-+            break;
-+          case 25:
-+            result = SetDisplayResolution("2160p25hz");
-+            break;
-+          case 29:
-+            result = SetDisplayResolution("2160p29hz");
-+            break;
-+          case 30:
-+            result = SetDisplayResolution("2160p30hz");
-+            break;
-+          case 50:
-+            result = SetDisplayResolution("2160p50hz420");
-+            break;
-+          case 59:
-+            result = SetDisplayResolution("2160p59hz");
-+            break;
-+          case 60:
-+            result = SetDisplayResolution("2160p60hz420");
-+            break;
-+        }
-+        break;
-   }
+   SysfsUtils::GetString("/sys/class/display/mode", mode);
+   if (res.strId == mode)
+     return false;
  
--  return true;
+-  return SetDisplayResolution(res.strId.c_str());
++  result = SetDisplayResolution(res.strId.c_str());
 +  DealWithScale(res);
 +
 +  return result;
++
  }
  
  bool CEGLNativeTypeAmlogic::ProbeResolutions(std::vector<RESOLUTION_INFO> &resolutions)
@@ -508,7 +362,7 @@ index d8dc511..cf04081 100644
    std::string valstr;
    SysfsUtils::GetString("/sys/class/amhdmitx/amhdmitx0/disp_cap", valstr);
    std::vector<std::string> probe_str = StringUtils::Split(valstr, "\n");
-@@ -202,11 +276,12 @@ bool CEGLNativeTypeAmlogic::ProbeResolutions(std::vector<RESOLUTION_INFO> &resol
+@@ -170,11 +201,12 @@ bool CEGLNativeTypeAmlogic::ProbeResolutions(std::vector<RESOLUTION_INFO> &resol
        resolutions.push_back(res);
    }
    return resolutions.size() > 0;
@@ -522,7 +376,7 @@ index d8dc511..cf04081 100644
    // check display/mode, it gets defaulted at boot
    if (!GetNativeResolution(res))
    {
-@@ -219,6 +294,8 @@ bool CEGLNativeTypeAmlogic::GetPreferredResolution(RESOLUTION_INFO *res) const
+@@ -187,6 +219,8 @@ bool CEGLNativeTypeAmlogic::GetPreferredResolution(RESOLUTION_INFO *res) const
  
  bool CEGLNativeTypeAmlogic::ShowWindow(bool show)
  {
@@ -531,7 +385,7 @@ index d8dc511..cf04081 100644
    std::string blank_framebuffer = "/sys/class/graphics/" + m_framebuffer_name + "/blank";
    SysfsUtils::SetInt(blank_framebuffer.c_str(), show ? 0 : 1);
    return true;
-@@ -226,6 +303,8 @@ bool CEGLNativeTypeAmlogic::ShowWindow(bool show)
+@@ -194,6 +228,8 @@ bool CEGLNativeTypeAmlogic::ShowWindow(bool show)
  
  bool CEGLNativeTypeAmlogic::SetDisplayResolution(const char *resolution)
  {
@@ -540,7 +394,7 @@ index d8dc511..cf04081 100644
    std::string mode = resolution;
    // switch display resolution
    SysfsUtils::SetString("/sys/class/display/mode", mode.c_str());
-@@ -237,32 +316,44 @@ bool CEGLNativeTypeAmlogic::SetDisplayResolution(const char *resolution)
+@@ -205,32 +241,44 @@ bool CEGLNativeTypeAmlogic::SetDisplayResolution(const char *resolution)
    return true;
  }
  
@@ -568,7 +422,7 @@ index d8dc511..cf04081 100644
 +
 +void CEGLNativeTypeAmlogic::DealWithScale(const RESOLUTION_INFO &res)
 +{
-+  CLog::Log(LOGDEBUG, "%s::%s Interface is %dx%d, screen size is %dx%d", CLASSNAME, __func__, res.iWidth, res.iHeight, res.iScreenWidth, res.iScreenHeight);
++  CLog::Log(LOGNOTICE, "%s::%s Interface is %dx%d, screen size is %dx%d", CLASSNAME, __func__, res.iWidth, res.iHeight, res.iScreenWidth, res.iScreenHeight);
 +
 +  if (res.iScreenWidth > res.iWidth && res.iScreenHeight > res.iHeight) {
 +    CLog::Log(LOGNOTICE, "%s::%s Scaling interfaces of size %dx%d to full screen", CLASSNAME, __func__, res.iWidth, res.iHeight);
@@ -604,7 +458,7 @@ index d8dc511..cf04081 100644
  }
  
  void CEGLNativeTypeAmlogic::SetFramebufferResolution(const RESOLUTION_INFO &res) const
-@@ -282,8 +373,8 @@ void CEGLNativeTypeAmlogic::SetFramebufferResolution(int width, int height) cons
+@@ -250,8 +298,8 @@ void CEGLNativeTypeAmlogic::SetFramebufferResolution(int width, int height) cons
      {
        vinfo.xres = width;
        vinfo.yres = height;

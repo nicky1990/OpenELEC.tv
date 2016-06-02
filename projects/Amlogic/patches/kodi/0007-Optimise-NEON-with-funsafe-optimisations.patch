@@ -1,0 +1,28 @@
+From bca8d59facecd92271eac056a476810d001f9d20 Mon Sep 17 00:00:00 2001
+From: Sam Nazarko <email@samnazarko.co.uk>
+Date: Tue, 2 Jun 2015 22:13:39 +0100
+Subject: [PATCH 07/28] Optimise NEON with funsafe optimisations
+
+Signed-off-by: Sam Nazarko <email@samnazarko.co.uk>
+---
+ configure.ac |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 5d47a4a..6c1e287 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -824,8 +824,8 @@ elif test "$use_arch" = "arm"; then
+         use_cpu=cortex-a8])
+   else
+     if test "$use_neon" = "yes"; then 
+-      CFLAGS="$CFLAGS -mfpu=neon -mvectorize-with-neon-quad"
+-      CXXFLAGS="$CXXFLAGS -mfpu=neon -mvectorize-with-neon-quad"
++      CFLAGS="$CFLAGS -mfpu=neon -funsafe-math-optimizations -mvectorize-with-neon-quad"
++      CXXFLAGS="$CXXFLAGS -mfpu=neon -funsafe-math-optimizations -mvectorize-with-neon-quad"
+     fi
+   fi
+ fi
+-- 
+1.7.10.4
+

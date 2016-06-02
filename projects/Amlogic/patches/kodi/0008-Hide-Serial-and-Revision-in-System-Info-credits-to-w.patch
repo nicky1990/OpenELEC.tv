@@ -1,0 +1,26 @@
+From d6fb1e5b158e62695cc60a1b3193155eee94887e Mon Sep 17 00:00:00 2001
+From: Alan Marchesan <justcavalli@gmail.com>
+Date: Thu, 4 Feb 2016 07:08:39 +0100
+Subject: [PATCH 08/28] Hide Serial and Revision in System Info (credits to
+ wrxtasy)
+
+---
+ xbmc/windows/GUIWindowSystemInfo.cpp |    2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/xbmc/windows/GUIWindowSystemInfo.cpp b/xbmc/windows/GUIWindowSystemInfo.cpp
+index 8941b87..f2f51fd 100644
+--- a/xbmc/windows/GUIWindowSystemInfo.cpp
++++ b/xbmc/windows/GUIWindowSystemInfo.cpp
+@@ -151,8 +151,6 @@ void CGUIWindowSystemInfo::FrameMove()
+ #if defined(__arm__) && defined(TARGET_LINUX)
+     SET_CONTROL_LABEL(i++, g_sysinfo.GetCPUBogoMips());
+     SET_CONTROL_LABEL(i++, g_sysinfo.GetCPUHardware());
+-    SET_CONTROL_LABEL(i++, g_sysinfo.GetCPURevision());
+-    SET_CONTROL_LABEL(i++, g_sysinfo.GetCPUSerial());
+ #endif
+     SetControlLabel(i++, "%s %s", 22011, SYSTEM_CPU_TEMPERATURE);
+ #if !defined(__arm__) || defined(TARGET_RASPBERRY_PI)
+-- 
+1.7.10.4
+

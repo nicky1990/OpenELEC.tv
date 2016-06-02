@@ -1,0 +1,35 @@
+diff --git a/system/keymaps/keyboard.xml b/system/keymaps/keyboard.xml
+index f420c48..b29612d 100644
+--- a/system/keymaps/keyboard.xml
++++ b/system/keymaps/keyboard.xml
+@@ -109,7 +109,7 @@
+       <backslash>ToggleFullScreen</backslash>
+       <home>FirstPage</home>
+       <end>LastPage</end>
+-      <power>ActivateWindow(shutdownmenu)</power>
++      <power>XBMC.Powerdown()</power>
+       <sleep>ActivateWindow(shutdownmenu)</sleep>
+       <!-- PVR windows -->
+       <e>ActivateWindow(TVGuide)</e>
+diff --git a/xbmc/powermanagement/linux/LogindUPowerSyscall.cpp b/xbmc/powermanagement/linux/LogindUPowerSyscall.cpp
+index 4e5bcc6..594b2e0 100644
+--- a/xbmc/powermanagement/linux/LogindUPowerSyscall.cpp
++++ b/xbmc/powermanagement/linux/LogindUPowerSyscall.cpp
+@@ -108,7 +108,7 @@ bool CLogindUPowerSyscall::Reboot()
+ 
+ bool CLogindUPowerSyscall::Suspend()
+ {
+-  return LogindSetPowerState("Suspend");
++  return LogindSetPowerState("PowerOff");
+ }
+ 
+ bool CLogindUPowerSyscall::Hibernate()
+@@ -123,7 +123,7 @@ bool CLogindUPowerSyscall::CanPowerdown()
+ 
+ bool CLogindUPowerSyscall::CanSuspend()
+ {
+-  return m_canSuspend;
++  return m_canPowerdown;
+ }
+ 
+ bool CLogindUPowerSyscall::CanHibernate()
