@@ -115,7 +115,7 @@ fi
 
   if [ "$BOOTLOADER" = "syslinux" ]; then
     mformat -v "$FAT_VOL_ID" -N "$FAT_VOL_ID" ::
-  elif [ "$BOOTLOADER" = "bcm2835-bootloader" -o "$BOOTLOADER" = "u-boot" ]; then
+  elif [ "$BOOTLOADER" = "bcm2835-firmware" -o "$BOOTLOADER" = "u-boot" ]; then
     mformat -v $LABEL_part1 ::
   fi
   sync
@@ -156,7 +156,7 @@ elif [ "$BOOTLOADER" = "bcm2835-firmware" ]; then
   # create bootloader configuration
     echo "image: creating bootloader configuration..."
     cat << EOF > "$OE_TMP"/cmdline.txt
-boot=LABEL=BOOT disk=LABEL=STORAGE quiet $EXTRA_CMDLINE
+boot=/dev/mmcblk0p1 disk=/dev/mmcblk0p2 quiet $EXTRA_CMDLINE
 EOF
 
     mcopy "$OE_TMP/cmdline.txt" ::
