@@ -1,5 +1,0 @@
-defenv
-setenv storeboot 'run bootsd;if imgread kernel boot ${loadaddr}; then store dtb read $dtb_mem_addr; bootm ${loadaddr}; fi;run update;'
-setenv bootsd 'mmcinfo;if fatload mmc 0 1080000 kernel.img; then if fatload mmc 0 0x1000000 dtb.img; then bootm 1080000;fi;fi;'
-saveenv
-reset
