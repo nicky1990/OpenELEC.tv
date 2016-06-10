@@ -121,10 +121,8 @@ post_makeinstall_target() {
     rm -rf $INSTALL/usr/lib/python*/$dir
   done
 
-  ( cd $INSTALL/usr/lib/python2.7
-    python -Wi -t -B $ROOT/$PKG_BUILD/Lib/compileall.py -d /usr/lib/python2.7 -f .
-    find $INSTALL/usr/lib/python2.7 -name "*.py" -exec rm -f {} \; &>/dev/null
-  )
+  python -Wi -t -B ../Lib/compileall.py $INSTALL/usr/lib/python*/ -f
+  rm -rf `find $INSTALL/usr/lib/python*/ -name "*.py"`
 
   rm -rf $INSTALL/usr/lib/python*/config
   rm -rf $INSTALL/usr/bin/2to3

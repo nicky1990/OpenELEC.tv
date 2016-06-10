@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="busybox"
-PKG_VERSION="1.24.2"
+PKG_VERSION="1.24.1"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
@@ -66,12 +66,6 @@ if [ -f $PROJECT_DIR/$PROJECT/busybox/busybox-init.conf ]; then
   BUSYBOX_CFG_FILE_INIT=$PROJECT_DIR/$PROJECT/busybox/busybox-init.conf
 else
   BUSYBOX_CFG_FILE_INIT=$PKG_DIR/config/busybox-init.conf
-fi
-
-if [ -f $PROJECT_DIR/$PROJECT/busybox/init ]; then
-  BUSYBOX_INIT_FILE=$PROJECT_DIR/$PROJECT/busybox/init
-else
-  BUSYBOX_INIT_FILE=$PKG_DIR/scripts/init
 fi
 
 pre_build_target() {
@@ -253,6 +247,6 @@ makeinstall_init() {
     chmod 755 $INSTALL/platform_init
   fi
 
-  cp $BUSYBOX_INIT_FILE $INSTALL
+  cp $PKG_DIR/scripts/init $INSTALL
   chmod 755 $INSTALL/init
 }

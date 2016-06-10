@@ -17,13 +17,12 @@
 ################################################################################
 
 PKG_NAME="libsquish"
-PKG_VERSION="52e7d93"
+PKG_VERSION="1.10-openelec"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE=""
-PKG_GIT_URL="https://github.com/OpenELEC/libsquish.git"
-PKG_GIT_BRANCH="master"
+PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.gz"
 PKG_DEPENDS_HOST="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION=""

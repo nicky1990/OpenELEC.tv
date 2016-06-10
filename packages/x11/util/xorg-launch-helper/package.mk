@@ -17,13 +17,12 @@
 ################################################################################
 
 PKG_NAME="xorg-launch-helper"
-PKG_VERSION="12b30bf"
+PKG_VERSION="4"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL-2"
 PKG_SITE="https://github.com/sofar/xorg-launch-helper"
-PKG_GIT_URL="https://github.com/sofar/xorg-launch-helper.git"
-PKG_GIT_BRANCH="master"
+PKG_URL="http://foo-projects.org/~sofar/${PKG_NAME}/${PKG_NAME}-${PKG_VERSION}.tar.gz"
 PKG_DEPENDS_TARGET="toolchain systemd"
 PKG_PRIORITY="optional"
 PKG_SECTION="x11/util"

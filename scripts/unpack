@@ -82,8 +82,6 @@ else
     $SCRIPTS/extract $1 "$1*.tgz"     $BUILD
     $SCRIPTS/extract $1 "$1*.7z"      $BUILD
     $SCRIPTS/extract $1 "$1*.zip"     $BUILD
-  elif [ -n "$PKG_GIT_URL" ]; then
-    $SCRIPTS/extract $1 "$1*.tar.xz"  $BUILD
   fi
 fi
 
@@ -96,7 +94,7 @@ if [ -d "$PKG_DIR/sources" ]; then
   cp -PRf $PKG_DIR/sources/* $BUILD/${PKG_NAME}-${PKG_VERSION}
 fi
 
-if [ -z "$PKG_URL" -o -z "$PKG_GIT_URL" ]; then
+if [ -z "$PKG_URL" ]; then
   mkdir -p "${BUILD}/${PKG_NAME}-${PKG_VERSION}"
 fi
 
@@ -152,14 +150,12 @@ if [ "$(type -t post_patch)" = "function" ]; then
 fi
 
 for config in `find $BUILD/$1* -name config.guess | sed 's/config.guess//'`; do
-  if [ ! "$PKG_NAME" == "configtools" ] ; then
-    printf "%${BUILD_INDENT}c ${boldyellow}FIXCONFIG${endcolor}   $config\n" ' '
+  printf "%${BUILD_INDENT}c ${boldyellow}FIXCONFIG${endcolor}   $config\n" ' '>&$SILENT_OUT
 
-    [ -f "$config/config.guess" -a -f $ROOT/$TOOLCHAIN/configtools/config.guess ] && \
-      cp -f $ROOT/$TOOLCHAIN/configtools/config.guess $config
-    [ -f "$config/config.sub" -a -f $ROOT/$TOOLCHAIN/configtools/config.sub ] && \
-      cp -f $ROOT/$TOOLCHAIN/configtools/config.sub $config
-  fi
+  [ -f "$config/config.guess" ] && cp -f $SCRIPTS/configtools/config.guess $config
+  [ -f "$config/config.sub" ] && cp -f $SCRIPTS/configtools/config.sub $config
+  [ -f "$config/configure.guess" ] && cp -f $SCRIPTS/configtools/config.guess $config/configure.guess
+  [ -f "$config/configure.sub" ] && cp -f $SCRIPTS/configtools/config.sub $config/configure.sub
 done
 
 rm -f $STAMPS/$1/build_*

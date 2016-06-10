@@ -25,27 +25,21 @@ if [ -z "$3" ]; then
   exit 1
 fi
 
-[ -z "$PKG_URL" -a -z "$PKG_GIT_URL" ] && exit 1
+[ -z "$PKG_URL" ] && exit 1
 [ ! -d "$SOURCES/$1" -o ! -d "$3" ] && exit 1
 
-if [ -n "$PKG_URL" ]; then
-  for i in $PKG_URL; do
-    FILE="$FILE `basename $i`"
-  done
-elif [ -n "$PKG_GIT_URL" ]; then
-  FILE="$PKG_NAME-$PKG_VERSION.tar.xz"
-fi
+for i in $PKG_URL; do
+  FILE="`basename $i`"
 
-for i in $FILE; do
-  case $i in
+  case $FILE in
   $2)
-    f="$SOURCES/$1/$i"
+    f="$SOURCES/$1/$FILE"
     if [ ! -f $f ]; then
-      echo "error: File $i doesn't exists in package $1 sources directory"
+      echo "error: File $FILE doesn't exists in package $1 sources directory"
       echo "have you called scripts/extract before scripts/get ?"
       exit 1
     fi
-    case $i in
+    case $FILE in
       *.tar)
         tar xf $f -C $3
         ;;

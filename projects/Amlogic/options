@@ -45,7 +45,7 @@
       # neon-vfpv4.
       TARGET_FPU="neon"
       ;;
-    aarch64)
+    arm64)
       # TARGET_CPU:
       # arm2 arm250 arm3 arm6 arm60 arm600 arm610 arm620 arm7 arm7m arm7d
       # arm7dm arm7di arm7dmi arm70 arm700 arm700i arm710 arm710c
@@ -70,7 +70,7 @@
       # fpa fpe2 fpe3 maverick vfp vfpv3 vfpv3-fp16 vfpv3-d16 vfpv3-d16-fp16
       # vfpv3xd vfpv3xd-fp16 neon neon-fp16 vfpv4 vfpv4-d16 fpv4-sp-d16
       # neon-vfpv4.
-      #TARGET_FPU="neon"
+      TARGET_FPU="neon"
       ;;
   esac
 
@@ -103,7 +103,7 @@
       # Kernel target for u-boot (default 'uImage' if BOOTLOADER=u-boot) (uImage / zImage)
       KERNEL_UBOOT_TARGET="uImage"
       ;;
-    aarch64)
+    arm64)
       # Kernel target for u-boot (default 'uImage' if BOOTLOADER=u-boot) (uImage / zImage)
       KERNEL_UBOOT_TARGET="Image"
 
@@ -127,6 +127,14 @@
 
 # Mediacenter to use (kodi / no)
   MEDIACENTER="kodi"
+
+# Skins to install (Confluence)
+# Space separated list is supported,
+# e.g. SKINS="Confluence"
+  SKINS="Confluence"
+
+# Default Skin (Confluence)
+  SKIN_DEFAULT="Confluence"
 
 # install extra subtitle Fonts for Kodi (yes / no)
   KODI_EXTRA_FONTS="yes"
@@ -361,7 +369,7 @@
       ADDON_URL="$ADDON_SERVER_URL/$ADDON_PATH"
       ;;
 
-    aarch64)
+    arm64)
       # set the addon dirs
       ADDON_PATH="$ADDON_VERSION/$TARGET_ARCH"
       ADDON_URL="$ADDON_SERVER_URL/$ADDON_PATH"
@@ -373,6 +381,3 @@
 # extra build dependeices
   EXTRA_DEPS="mkimage"
   EXTRA_DEPS_PKG="u-boot-tools"
-
-# kernel image name
-  KERNEL_NAME="kernel.img"

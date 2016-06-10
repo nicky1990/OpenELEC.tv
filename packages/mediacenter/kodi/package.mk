@@ -17,11 +17,13 @@
 ################################################################################
 
 PKG_NAME="kodi"
+PKG_VERSION="16.1-rc2-9cbbe01"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.kodi.tv"
-PKG_DEPENDS_TARGET="toolchain kodi:host xmlstarlet:host libsquish boost Python zlib bzip2 systemd pciutils lzo pcre swig:host libass curl rtmpdump fontconfig fribidi tinyxml libjpeg-turbo libpng tiff freetype jasper libcdio libmpeg2 taglib libxml2 libxslt yajl sqlite ffmpeg crossguid giflib"
+PKG_URL="http://amlinux.ru/source/$PKG_NAME-$PKG_VERSION.tar.xz"
+PKG_DEPENDS_TARGET="toolchain kodi:host libsquish boost Python zlib bzip2 systemd pciutils lzo pcre swig:host libass curl rtmpdump fontconfig fribidi tinyxml libjpeg-turbo libpng tiff freetype jasper libogg libcdio libmpeg2 taglib libxml2 libxslt yajl sqlite libvorbis ffmpeg crossguid giflib"
 PKG_DEPENDS_HOST="lzo:host libpng:host libjpeg-turbo:host giflib:host"
 PKG_PRIORITY="optional"
 PKG_SECTION="mediacenter"
@@ -30,21 +32,6 @@ PKG_LONGDESC="Kodi Media Center (which was formerly named Xbox Media Center or X
 
 PKG_IS_ADDON="no"
 PKG_AUTORECONF="no"
-
-case "$KODIPLAYER_DRIVER" in
-  bcm2835-firmware)
-    PKG_VERSION="60a76d9"
-    PKG_GIT_URL="https://github.com/OpenELEC/xbmc.git"
-    PKG_GIT_BRANCH="jarvis_rbp_backports"
-    PKG_KEEP_CHECKOUT="no"
-    ;;
-  *)
-    PKG_VERSION="c1c4b9e"
-    PKG_GIT_URL="https://github.com/xbmc/xbmc.git"
-    PKG_GIT_BRANCH="Jarvis"
-    PKG_KEEP_CHECKOUT="no"
-    ;;
-esac
 
 # configure GPU drivers and dependencies:
   get_graphicdrivers
@@ -204,7 +191,7 @@ fi
 if [ ! "$KODIPLAYER_DRIVER" = default ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET $KODIPLAYER_DRIVER"
 
-  if [ "$KODIPLAYER_DRIVER" = bcm2835-firmware ]; then
+  if [ "$KODIPLAYER_DRIVER" = bcm2835-driver ]; then
     KODI_OPENMAX="--enable-openmax"
     KODI_PLAYER="--enable-player=omxplayer"
     KODI_CODEC="--with-platform=raspberry-pi"
@@ -222,7 +209,7 @@ if [ ! "$KODIPLAYER_DRIVER" = default ]; then
   fi
 fi
 
-if [ "$VDPAU_SUPPORT" = "yes" -a "$DISPLAYSERVER" = "x11" ]; then
+if [ "$VDPAU_SUPPORT" = yes ]; then
   PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET libvdpau"
   KODI_VDPAU="--enable-vdpau"
 else
@@ -247,8 +234,6 @@ export PYTHON_CPPFLAGS="-I$SYSROOT_PREFIX/usr/include/python$PYTHON_VERSION"
 export PYTHON_LDFLAGS="-L$SYSROOT_PREFIX/usr/lib/python$PYTHON_VERSION -lpython$PYTHON_VERSION"
 export PYTHON_SITE_PKG="$SYSROOT_PREFIX/usr/lib/python$PYTHON_VERSION/site-packages"
 export ac_python_version="$PYTHON_VERSION"
-
-export GIT_REV="$PKG_VERSION"
 
 PKG_CONFIGURE_OPTS_TARGET="gl_cv_func_gettimeofday_clobber=no \
                            ac_cv_lib_bluetooth_hci_devid=no \
@@ -297,8 +282,6 @@ pre_configure_host() {
 # kodi fails to build in subdirs
   cd $ROOT/$PKG_BUILD
     rm -rf .$HOST_NAME
-
-  echo "$PKG_VERSION" > VERSION
 }
 
 make_host() {
@@ -350,12 +333,6 @@ make_target() {
   if [ "$DISPLAYSERVER" = "x11" ]; then
     make kodi-xrandr
   fi
-
-  if [ "$SKIN_REMOVE_SHIPPED" = "yes" ]; then
-    rm -rf addons/skin.confluence
-  else
-    TexturePacker -input addons/skin.confluence/media/ -output Textures.xbt -dupecheck -use_none
-  fi
 }
 
 post_makeinstall_target() {
@@ -390,15 +367,6 @@ post_makeinstall_target() {
   rm -rf $INSTALL/usr/share/kodi/addons/service.xbmc.versioncheck
   rm -rf $INSTALL/usr/share/kodi/addons/visualization.vortex
   rm -rf $INSTALL/usr/share/xsessions
-
-  if [ ! "$SKIN_REMOVE_SHIPPED" = "yes" ]; then
-    # Rebrand
-      sed -e "s,@DISTRONAME@,$DISTRONAME,g" -i $INSTALL/usr/share/kodi/addons/skin.confluence/720p/IncludesHomeMenuItems.xml
-
-    rm -rf $INSTALL/usr/share/kodi/addons/skin.confluence/media
-    mkdir -p $INSTALL/usr/share/kodi/addons/skin.confluence/media
-    cp Textures.xbt $INSTALL/usr/share/kodi/addons/skin.confluence/media
-  fi
 
   mkdir -p $INSTALL/usr/share/kodi/addons
     cp -R $PKG_DIR/config/os.openelec.tv $INSTALL/usr/share/kodi/addons

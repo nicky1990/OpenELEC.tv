@@ -218,12 +218,6 @@ fi
 # copy board related files to filesystem
   if [ -n "$DEVICE" -a -d "$PROJECT_DIR/$PROJECT/devices/$DEVICE/filesystem" ]; then
     cp -PR $PROJECT_DIR/$PROJECT/devices/$DEVICE/filesystem/* $INSTALL
-    # install project specific systemd services
-    for service in $PROJECT_DIR/$PROJECT/devices/$DEVICE/filesystem/usr/lib/systemd/system/*.service ; do
-      if [ -f "$service" ] ; then
-        enable_service $(basename $service)
-      fi
-    done
   fi
 
 # run depmod
@@ -242,7 +236,7 @@ fi
     rm -rf $TARGET_IMG/$IMAGE_NAME.kernel
 
 # copy kernel to target dir
-  if [ "$BOOTLOADER" = "bcm2835-firmware" ]; then
+  if [ "$BOOTLOADER" = "bcm2835-bootloader" ]; then
     echo "injecting DeviceTreeBlobs to kernel..."
     perl $BUILD/linux-$(kernel_version)/scripts/mkknlimg $BUILD/linux-$(kernel_version)/arch/$TARGET_KERNEL_ARCH/boot/$KERNEL_TARGET $TARGET_IMG/$IMAGE_NAME.kernel
     echo "...done"
@@ -367,7 +361,7 @@ fi
       tar cf $TARGET_IMG/$IMAGE_NAME.tar -C target $IMAGE_NAME
 
     # create image files if requested
-      if [ "$1" = "mkimage" -o "$1" = "amlpkg" -a -n "$BOOTLOADER" ]; then
+      if [ "$1" = "mkimage" -a -n "$BOOTLOADER" ]; then
         # projects can set KERNEL_NAME (kernel.img)
         if [ -z "$KERNEL_NAME" ] ; then
           KERNEL_NAME="KERNEL"
@@ -442,14 +436,17 @@ fi
         java -Xmx1024m -jar $SIGNAPK_DIR/signapk.jar -w $SIGNAPK_DIR/testkey.x509.pem $SIGNAPK_DIR/testkey.pk8 update.zip sign/$IMAGE_NAME-update.zip
 
         # create the auto-install package
-        echo "Creating Amlogic ZIP auto-install package"
-        pushd sign > /dev/null
-        echo -e "--update_package=/sdcard/$IMAGE_NAME-update.zip\n--wipe_cache\n--wipe_data" > factory_update_param.aml
-        if [ -f $INSTALL_SRC_DIR/files/aml_autoscript ]; then
-          cp $INSTALL_SRC_DIR/files/aml_autoscript .
+        if [ -f "$INSTALL_SRC_DIR/files/recovery.img" ]; then
+          echo "Creating Amlogic ZIP auto-install package"
+          pushd sign > /dev/null
+          echo -e "--update_package=/sdcard/$IMAGE_NAME-update.zip\n--wipe_cache\n--wipe_data" > factory_update_param.aml
+          cp $INSTALL_SRC_DIR/files/recovery.img .
+          if [ -f $INSTALL_SRC_DIR/files/aml_autoscript ]; then
+            cp $INSTALL_SRC_DIR/files/aml_autoscript .
+          fi
+          zip -q $TARGET_IMG/$IMAGE_NAME.zip *
+          popd > /dev/null
         fi
-        zip -q $TARGET_IMG/$IMAGE_NAME.zip *
-        popd > /dev/null
 
         # copy update package to target directory
         cp sign/$IMAGE_NAME-update.zip $TARGET_IMG
@@ -506,10 +503,10 @@ fi
         fi
 
       # copy Bootloader
-        cp -PR $BUILD/bcm2835-firmware-*/LICENCE* $RELEASE_DIR/${DISTRONAME}_${PROJECT}/System/
-        cp -PR $BUILD/bcm2835-firmware-*/bootcode.bin $RELEASE_DIR/${DISTRONAME}_${PROJECT}/System/
-        cp -PR $BUILD/bcm2835-firmware-*/fixup_x.dat $RELEASE_DIR/${DISTRONAME}_${PROJECT}/System/fixup.dat
-        cp -PR $BUILD/bcm2835-firmware-*/start_x.elf $RELEASE_DIR/${DISTRONAME}_${PROJECT}/System/start.elf
+        cp -PR $BUILD/bcm2835-bootloader-*/LICENCE* $RELEASE_DIR/${DISTRONAME}_${PROJECT}/System/
+        cp -PR $BUILD/bcm2835-bootloader-*/bootcode.bin $RELEASE_DIR/${DISTRONAME}_${PROJECT}/System/
+        cp -PR $BUILD/bcm2835-bootloader-*/fixup_x.dat $RELEASE_DIR/${DISTRONAME}_${PROJECT}/System/fixup.dat
+        cp -PR $BUILD/bcm2835-bootloader-*/start_x.elf $RELEASE_DIR/${DISTRONAME}_${PROJECT}/System/start.elf
 
       # copy system files
         cp $TARGET_IMG/$IMAGE_NAME.system $RELEASE_DIR/${DISTRONAME}_${PROJECT}/System/SYSTEM

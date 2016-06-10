@@ -17,13 +17,12 @@
 ################################################################################
 
 PKG_NAME="libshairplay"
-PKG_VERSION="ce80e00"
+PKG_VERSION="498bc5b"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="https://github.com/juhovh/shairplay"
-PKG_GIT_URL="https://github.com/juhovh/shairplay.git"
-PKG_GIT_BRANCH="master"
+PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
 PKG_DEPENDS_TARGET="toolchain"
 PKG_PRIORITY="optional"
 PKG_SECTION="network"
